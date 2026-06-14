@@ -1,0 +1,32 @@
+#+title: Opencode configuration
+
+This is my personal [[https://opencode.ai/][OpenCode]] configuration.
+
+
+* Goals
+- Offer agents to excel at multi-agent orchestration of tasks
+- Offer global skills helpful for single and multi-agent tasks
+- Use selected technologies
+  - Nix flakes for environment definition
+  - Rust for most tasks (high level, great performance, good libraries and type system)
+  - Haskell (excelent type system, good performance)
+  - Python (high level, vast library ecosystem)
+  - Postgres/DuckDB for data handling
+  - Prolog and solvers like Minizinc for reasoning
+  - HTML+vanilla JS for web pages and apps
+
+
+* Status
+- Implemented. OpenCode configuration with multi-agent orchestration.
+  - 1 orchestrator + 6 specialized subagents (Rust, Haskell, Python,
+    Data Engineering, Reasoning, Web)
+  - 8 domain-specific skills
+  - Nix flake support for reproducible environments
+
+
+* Usage
+
+#+begin_src fish
+  git clone https://github.com/Dietr1ch/mttm ~/.config/opencode/
+#+end_src
+
