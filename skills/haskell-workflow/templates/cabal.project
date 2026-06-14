@@ -1,0 +1,7 @@
+packages: .
+
+tests: true
+
+benchmarks: false
+
+index-state: HEAD

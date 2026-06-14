@@ -7,8 +7,7 @@ description: Use when writing, building, or debugging Haskell code with Cabal or
 
 ## Project setup
 
-- `cabal init` or `stack new`
-- Use Cabal files or `package.yaml` (hpack) for dependencies
+- `cabal init`
 
 ## Development loop
 
