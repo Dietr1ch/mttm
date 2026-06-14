@@ -27,3 +27,7 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 - `tokio` — async runtime
 - `rayon` — data parallelism
 - `tracing` — structured logging
+
+---
+
+*Loaded by the **rust-dev** subagent.* See agent/rust-dev.md for the agent prompt.

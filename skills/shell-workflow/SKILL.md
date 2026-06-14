@@ -46,3 +46,7 @@ scripts/
 - Use `readonly` / `declare -r` for constants in bash.
 - Print errors to stderr: `echo "error: ..." >&2`.
 - Support `--help` and `--dry-run` where useful.
+
+---
+
+*Loaded by the **orchestrator** (or any agent writing shell scripts).* See agent/orchestrator.md for context.

@@ -28,3 +28,7 @@ nix/               # Supporting Nix files
 - Keep `flake.nix` minimal; split logic into `nix/` modules.
 - Use `nixpkgs-fmt` for formatting Nix files.
 - Prefer `nix-shell` compatibility via `devShells.default`.
+
+---
+
+*Loaded by the **orchestrator** when the task involves Nix flake setup.* See agent/orchestrator.md for context.

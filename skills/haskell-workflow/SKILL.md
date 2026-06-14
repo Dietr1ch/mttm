@@ -25,3 +25,7 @@ description: Use when writing, building, or debugging Haskell code with Cabal or
 - `hspec` / `tasty` — testing
 - `megaparsec` — parsing
 - `optparse-applicative` — CLI
+
+---
+
+*Loaded by the **haskell-dev** subagent.* See agent/haskell-dev.md for the agent prompt.

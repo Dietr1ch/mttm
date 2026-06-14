@@ -26,3 +26,7 @@ When the orchestrator receives a request:
 - The orchestrator provides relevant context (files, schemas, prior decisions).
 - Subagents return results; they do not make cross-domain changes.
 - The orchestrator reviews and resolves conflicts between subagent outputs.
+
+---
+
+*Loaded by the **orchestrator** when decomposing complex requests.* See agent/orchestrator.md for context.

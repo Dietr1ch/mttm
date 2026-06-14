@@ -25,3 +25,7 @@ description: Use when modeling logic problems, constraint satisfaction, or optim
 - Separate model from data
 - Use `constraint` and `solve` blocks explicitly
 - Optimize with `solve minimize` / `solve maximize`
+
+---
+
+*Loaded by the **reasoning-engineer** subagent.* See agent/reasoning-engineer.md for the agent prompt.

@@ -23,3 +23,7 @@ description: Use when designing schemas, writing queries, or building data pipel
 - Use `EXPLAIN ANALYZE` to debug slow queries
 - Partition large tables by date
 - Materialized views for expensive aggregations
+
+---
+
+*Loaded by the **data-engineer** subagent.* See agent/data-engineer.md for the agent prompt.

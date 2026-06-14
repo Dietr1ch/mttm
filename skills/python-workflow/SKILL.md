@@ -34,3 +34,7 @@ This project may provide a Nix flake with a development shell. ALWAYS check for 
 - `click` / `typer` — CLI
 - `polars` / `pandas` — data frames
 - `httpx` — HTTP client
+
+---
+
+*Loaded by the **python-dev** subagent.* See agent/python-dev.md for the agent prompt.

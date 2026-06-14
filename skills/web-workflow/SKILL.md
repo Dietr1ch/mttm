@@ -27,3 +27,7 @@ description: Use when building web interfaces with vanilla HTML, CSS, and JavaSc
 - Keyboard navigation (`tabindex`, `onkeydown`)
 - Sufficient color contrast (WCAG AA)
 - `prefers-reduced-motion` for animations
+
+---
+
+*Loaded by the **web-dev** subagent.* See agent/web-dev.md for the agent prompt.

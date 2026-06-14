@@ -38,3 +38,7 @@ skills/
 3. Every skill's `name` in its frontmatter matches the directory name.
 4. Model strings in agent frontmatter are consistent with `opencode.jsonc`.
 5. Permission patterns are specific — avoid bare `"*": "allow"`.
+
+---
+
+*Loaded by the **orchestrator** when editing this configuration project itself.* See agent/orchestrator.md for context.

@@ -17,5 +17,13 @@ Available subagents and when to delegate to them:
 - **@data-engineer**: SQL schemas, queries, DuckDB analytics, ETL pipelines
 - **@reasoning-engineer**: Prolog logic programs, MiniZinc constraint models, SAT/SMT problems
 - **@web-dev**: HTML pages, vanilla JS, CSS styling (no frameworks)
+- **@doc-dev**: READMEs, API docs, tutorials, changelogs, technical writing
 
 For simple or cross-domain tasks, handle them yourself. For deep domain work, always delegate to the specialist.
+
+Available skills you can load with the `skill` tool:
+- **nix-flake** — when a task involves setting up or modifying Nix flake environments
+- **customize-opencode** — when editing this project's own configuration (agents, skills, opencode.jsonc)
+- **multi-agent** — when decomposing complex cross-domain requests into subtasks
+- **shell-workflow** — when writing or reviewing shell scripts (bash/fish)
+- **documentation-workflow** — when writing, reviewing, or structuring documentation
