@@ -1,0 +1,27 @@
+:root {
+  --color-bg: #ffffff;
+  --color-fg: #1a1a1a;
+  --color-fg-alt: #0066cc;
+  --spacing: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  color: var(--color-fg);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+header,
+main,
+footer {
+  padding: var(--spacing);
+  max-width: 960px;
+  margin: 0 auto;
+}
