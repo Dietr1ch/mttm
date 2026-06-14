@@ -25,8 +25,16 @@ This is my personal [[https://opencode.ai/][OpenCode]] configuration.
 
 
 * Usage
-
+Clone project,
 #+begin_src fish
-  git clone https://github.com/Dietr1ch/mttm ~/.config/opencode/
+  git clone https://github.com/Dietr1ch/mttm ~/Projects/mttm/
+#+end_src
+
+Symlink agents and skills,
+#+begin_src fish
+  pushd ~/.config/opencode/
+  ln -s ~/Projects/mttm/agent
+  ln -s ~/Projects/mttm/skills
+  popd
 #+end_src
 
