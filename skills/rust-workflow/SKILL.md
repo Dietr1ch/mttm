@@ -24,7 +24,7 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 - `clap` with `derive` for argument parsing and `env` to read environment variables
 - `config` for configuration
 - `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
-- `tracing` + `tracing-subscriber` for logging
+- `log` for logging in library code. `tracing` + `tracing-subscriber` + `tracing-log` in application
 - `serde` + `serde_ron` / `serde_json` for serialization
 - `rayon` for parallelism
 - `tokio` for async
