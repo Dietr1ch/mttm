@@ -27,8 +27,8 @@ cargo install project-name
 use project_name::do_thing;
 
 fn main() {
-    let result = do_thing("input");
-    println!("{result}");
+	let result = do_thing("input");
+	println!("{result}");
 }
 ```
 

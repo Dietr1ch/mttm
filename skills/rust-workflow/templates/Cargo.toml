@@ -29,7 +29,7 @@ opt-level = 0
 debug = false
 opt-level = 3
 codegen-units = 1
- 
+
 
 # Debugging profile
 [profile.debugging]
@@ -46,4 +46,3 @@ debug = true
 inherits = "release"
 lto = true
 codegen-units = 1
-
