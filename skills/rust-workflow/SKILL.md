@@ -21,12 +21,17 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 
 ## Key crates
 
-- `anyhow` / `thiserror` — error handling
-- `serde` / `serde_json` — serialization
-- `clap` — CLI argument parsing
-- `tokio` — async runtime
-- `rayon` — data parallelism
-- `tracing` — structured logging
+- `clap` with `derive` for argument parsing and `env` to read environment variables
+- `config` for configuration
+- `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
+- `tracing` + `tracing-subscriber` for logging
+- `serde` + `serde_ron` / `serde_json` for serialization
+- `rayon` for parallelism
+- `tokio` for async
+- `reqwest` for HTTP clients
+- `axum` for HTTP servers
+- `duckdb`, `polars`, `arrow` for dealing with data
+- `sqlx` for dealing with data
 
 ---
 
