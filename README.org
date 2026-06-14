@@ -1,40 +1,396 @@
-#+title: Opencode configuration
+#+title: mttm — Multi-Tool Team Mate
+#+subtitle: A reusable multi-agent configuration for OpenCode
 
-This is my personal [[https://opencode.ai/][OpenCode]] configuration.
+This is my personal [[https://opencode.ai/][OpenCode]] agent+skill configuration. It provides a
+multi-agent orchestration system that routes development tasks to specialized
+subagents — each equipped with domain expertise, focused prompts, and
+least-privilege file permissions.
 
+* Table of Contents
+- [[#overview][Overview]]
+- [[#architecture][Architecture]]
+- [[#installation][Installation]]
+- [[#model-strategy][Model Strategy]]
+- [[#agent-reference][Agent Reference]]
+- [[#skill-reference][Skill Reference]]
+- [[#customization][Customization]]
+- [[#development][Development]]
 
-* Goals
-- Offer agents to excel at multi-agent orchestration of tasks
-- Offer global skills helpful for single and multi-agent tasks
-- Use selected technologies
-  - Nix flakes for environment definition
-  - Rust for most tasks (high level, great performance, good libraries and type system)
-  - Haskell (excelent type system, good performance)
-  - Python (high level, vast library ecosystem)
-  - Postgres/DuckDB for data handling
-  - Prolog and solvers like Minizinc for reasoning
-  - HTML+vanilla JS for web pages and apps
+* Overview
 
+This project turns OpenCode into a coordinated team of specialists:
 
-* Status
-- Implemented. OpenCode configuration with multi-agent orchestration.
-  - 1 orchestrator + 6 specialized subagents (Rust, Haskell, Python,
-    Data Engineering, Reasoning, Web)
-  - 8 domain-specific skills
-  - Nix flake support for reproducible environments
+- **Orchestrator** – understands the full request, decomposes it, delegates
+  subtasks to the right subagent, and integrates their outputs.
+- **7 subagents** – domain experts for Rust, Haskell, Python, data
+  engineering, reasoning/constraint solving, web development, and documentation.
+- **11 skills** – on-demand workflow guidance loaded by agents when a task
+  matches the skill's domain.
+- **Nix flake support** – reproducible development environments for every
+  language stack (environment definitions via [[https://nixos.wiki/wiki/Flakes][Nix flakes]]).
 
+The project is designed to be:
 
-* Usage
-Clone project,
-#+begin_src fish
-  git clone https://github.com/Dietr1ch/mttm ~/Projects/mttm/
+- **Layered** – the orchestrator shields you from having to think about
+  which specialist to call; you describe what you want, it handles the rest.
+- **Extensible** – adding a new subagent or skill takes one file and one
+  line in the orchestrator's prompt.
+- **Reproducible** – Nix flakes pin toolchains so every agent gets the same
+  environment every time.
+
+* Architecture
+
+The system follows a hub-and-spoke pattern:
+
+#+begin_src mermaid :file docs/architecture.png :exports both
+flowchart TB
+    User([User]) -->|request| ORC[Orchestrator<br/>deepseek-v4-flash]
+
+    subgraph Subagents [Specialized Subagents]
+        RS[rust-dev<br/>qwen3-coder]
+        HS[haskell-dev<br/>deepseek-v4-flash]
+        PY[python-dev<br/>qwen3-coder]
+        DE[data-engineer<br/>deepseek-v4-flash]
+        RE[reasoning-engineer<br/>deepseek-v4-pro]
+        WB[web-dev<br/>qwen3-coder]
+        DD[doc-dev<br/>deepseek-v4-flash]
+    end
+
+    ORC -->|task tool| RS
+    ORC -->|task tool| HS
+    ORC -->|task tool| PY
+    ORC -->|task tool| DE
+    ORC -->|task tool| RE
+    ORC -->|task tool| WB
+    ORC -->|task tool| DD
+
+    subgraph Skills [On-Demand Skills]
+        SK1[rust-workflow]
+        SK2[haskell-workflow]
+        SK3[python-workflow]
+        SK4[data-engineering-workflow]
+        SK5[reasoning-workflow]
+        SK6[web-workflow]
+        SK7[shell-workflow]
+        SK8[nix-flake]
+        SK9[customize-opencode]
+        SK10[multi-agent]
+        SK11[documentation-workflow]
+    end
+
+    RS -.->|skill tool| SK1
+    HS -.->|skill tool| SK2
+    PY -.->|skill tool| SK3
+    DE -.->|skill tool| SK4
+    RE -.->|skill tool| SK5
+    WB -.->|skill tool| SK6
+    DD -.->|skill tool| SK11
+    ORC -.->|skill tool| SK8
+    ORC -.->|skill tool| SK9
+    ORC -.->|skill tool| SK10
+    ORC -.->|skill tool| SK7
 #+end_src
 
-Symlink agents and skills,
-#+begin_src fish
-  pushd ~/.config/opencode/
-  ln -s ~/Projects/mttm/agent
-  ln -s ~/Projects/mttm/skills
-  popd
+** How it works
+
+1. You send a request to OpenCode (e.g., "Build a CLI tool in Rust that
+   queries DuckDB and outputs JSON").
+2. The **orchestrator** receives it, analyzes the domains involved (Rust,
+   data engineering), and decomposes it into subtasks.
+3. Each subtask is dispatched to the appropriate **subagent** via the
+   =task= tool. Subagents are isolated: they only see the context the
+   orchestrator provides and can only edit files matching their
+   permission patterns.
+4. During execution, a subagent may load a **skill** (via the =skill=
+   tool) for domain-specific workflows, templates, and conventions.
+5. Results flow back to the orchestrator, which integrates them,
+   resolves cross-domain conflicts, and presents the final output.
+
+** File layout
+
+#+begin_src text
+opencode.jsonc              Main configuration: models, default agent, instructions
+README.org                  This file (loaded as global instructions for all agents)
+agent/
+  orchestrator.md           Primary agent — routes tasks to subagents
+  rust-dev.md               Rust specialist
+  python-dev.md             Python specialist
+  haskell-dev.md            Haskell specialist
+  web-dev.md                Web (vanilla HTML/CSS/JS) specialist
+  data-engineer.md          Postgres/DuckDB specialist
+  reasoning-engineer.md     Prolog/MiniZinc specialist
+  doc-dev.md                READMEs, API docs, tutorials, technical writing
+
+skills/
+  <name>/
+    SKILL.md                Domain skill (loaded on demand)
+    templates/              Starter files for the domain
+  ...                       (11 skills total, listed below)
+
+scripts/
+  validate-config.bash      Sanity-check the configuration
 #+end_src
 
+* Installation
+
+** Prerequisites
+
+- [[https://opencode.ai/][OpenCode]] installed and configured.
+- Git.
+
+** Steps
+
+#+begin_src fish
+# Clone the repository
+git clone https://github.com/Dietr1ch/mttm ~/Projects/mttm/
+
+# Symlink agents and skills into OpenCode's config directory
+pushd ~/.config/opencode/
+ln -s ~/Projects/mttm/agent
+ln -s ~/Projects/mttm/skills
+popd
+#+end_src
+
+That's it. OpenCode will pick up the orchestrator as the default agent
+and all subagents will be available.
+
+** Verify the installation
+
+#+begin_src bash
+~/Projects/mttm/scripts/validate-config.bash
+#+end_src
+
+This checks that:
+- All agent files have valid YAML frontmatter.
+- Every skill directory name matches its =name= field.
+- Agent model assignments are consistent with the main config.
+
+* Model Strategy
+
+This project uses a two-tier model assignment to balance quality, cost,
+and latency:
+
+| Role                     | Model                          | Rationale                                                    |
+|--------------------------+--------------------------------+--------------------------------------------------------------|
+| Orchestrator             | =deepseek/deepseek-v4-flash=   | Strong reasoning for decomposition; moderate speed            |
+| Rust subagent            | =ollama/qwen3-coder=           | Narrow, well-scoped Rust tasks; fast local inference          |
+| Python subagent          | =ollama/qwen3-coder=           | Same rationale — local, fast, good enough for Python          |
+| Web subagent             | =ollama/qwen3-coder=           | Same — vanilla JS/CSS/HTML is well within its capability      |
+| Documentation subagent   | =deepseek/deepseek-v4-flash=   | Strong language understanding for clear, structured docs      |
+| Haskell subagent         | =deepseek/deepseek-v4-flash=   | Haskell's type system benefits from stronger reasoning        |
+| Data Engineering         | =deepseek/deepseek-v4-flash=   | Schema design and query optimization need deeper analysis     |
+| Reasoning/Constraint     | =deepseek/deepseek-v4-pro=     | Prolog/MiniZinc require the strongest reasoning model         |
+
+** When to use which model
+
+- **=deepseek/deepseek-v4-flash=** — default workhorse. Good balance of
+  reasoning depth and response speed. Used by the orchestrator (needs to
+  plan and integrate) and by subagents whose domains benefit from deeper
+  reasoning (Haskell types, SQL optimization).
+- **=deepseek/deepseek-v4-pro=** — heavy reasoning. Used only by the
+  reasoning-engineer subagent for Prolog, MiniZinc, SAT/SMT, and
+  constraint satisfaction where correctness depends on precise logical
+  inference.
+- **=ollama/qwen3-coder=** — small, fast local model. Used for subagents
+  with narrow, well-defined tasks (Rust, Python, web). The orchestrator
+  provides enough context that the subagent only needs to generate
+  straightforward code.
+
+** Overriding models
+
+To use a different model, edit =opencode.jsonc=:
+
+#+begin_src jsonc
+{
+  "model": "your/preferred-model",       // Orchestrator + Haskell/Data/Reasoning
+  "small_model": "your/small-model",      // Rust/Python/Web subagents
+}
+// Then update individual agent .md files' `model:` frontmatter if needed.
+// The orchestrator's `model:` is set in its frontmatter and defaults to `deepseek-v4-flash`.
+// Override with environment variable OPENCODE_MODEL or per-request model parameter.
+#+end_src
+
+* Agent Reference
+
+| Agent                | Mode      | Model                        | Delegation trigger                                        |
+|----------------------+-----------+------------------------------+-----------------------------------------------------------|
+| orchestrator         | primary   | deepseek/deepseek-v4-flash   | Entry point for all requests                              |
+| rust-dev             | subagent  | ollama/qwen3-coder           | Rust/Cargo code, perf-critical systems                    |
+| haskell-dev          | subagent  | deepseek/deepseek-v4-flash   | Haskell/Cabal/Stack code, pure-functional design          |
+| python-dev           | subagent  | ollama/qwen3-coder           | Python scripts, libraries, data science, automation       |
+| data-engineer        | subagent  | deepseek/deepseek-v4-flash   | SQL schemas, DuckDB, Postgres, ETL pipelines              |
+| reasoning-enginee   | subagent  | deepseek/deepseek-v4-pro     | Prolog, MiniZinc, SAT/SMT, constraint solving             |
+| web-dev              | subagent  | ollama/qwen3-coder           | HTML, vanilla CSS/JS, no frameworks                       |
+| doc-dev              | subagent  | deepseek/deepseek-v4-flash   | READMEs, API docs, tutorials, changelogs, technical writing |
+
+** Orchestrator
+
+The orchestrator is the entry point for every conversation. Its
+responsibilities:
+
+1. **Understand** the user's request and identify the domains involved.
+2. **Decompose** into well-scoped subtasks, one per domain.
+3. **Delegate** each subtask to the right subagent via the =task= tool.
+4. **Integrate** the results into a coherent response, resolving any
+   cross-domain conflicts (e.g., ensuring a Rust subagent's struct
+   definitions match a data-engineer's SQL schema).
+
+For simple or cross-domain tasks, the orchestrator may handle them
+directly without delegation.
+
+** Subagents
+
+Each subagent has:
+- A focused **prompt** describing its expertise and conventions.
+- **Permission patterns** limiting file edits to relevant extensions
+  (e.g., rust-dev can edit =*.rs= and =Cargo.toml=, but nothing else
+  without asking).
+- **Model** tuned to the domain's reasoning requirements.
+- Access to relevant **skills** for domain-specific workflows.
+
+* Skill Reference
+
+Skills are loaded on-demand by agents when the task matches the skill's
+description. They provide detailed workflows, conventions, and templates.
+
+| Skill                    | Loaded by                   | Provides                                               |
+|--------------------------+-----------------------------+--------------------------------------------------------|
+| rust-workflow            | rust-dev                    | Cargo commands, crate recommendations, fmt/lint config |
+| haskell-workflow         | haskell-dev                 | Cabal commands, library recommendations, ormolu config |
+| python-workflow          | python-dev                  | uv/ruff/pytest workflows, pyproject.toml templates     |
+| web-workflow             | web-dev                     | HTML/CSS/JS structure, a11y checklist, starter files   |
+| data-engineering-workflow| data-engineer               | DuckDB/Postgres patterns, CTE style, indexing advice   |
+| reasoning-workflow       | reasoning-engineer          | Prolog/MiniZinc conventions, solver selection           |
+| shell-workflow           | orchestrator, any agent     | Bash/Fish conventions, argument parsing patterns       |
+| nix-flake                | orchestrator                | Flake structure, commands, best practices              |
+| customize-opencode       | orchestrator                | This project's own structure and conventions           |
+| multi-agent              | orchestrator                | Orchestration patterns and task decomposition guide    |
+| documentation-workflow   | doc-dev                     | Doc templates, style guide, conventions for README/API/changelog |
+
+** Template files
+
+Several skills ship with =templates/= directories containing starter
+configurations. When an agent's task involves creating a new project,
+it can reference these templates as a starting point:
+
+- **rust-workflow**: =Cargo.toml= (=edition = "2024"=, profile tuning),
+  =rustfmt.toml= (hard tabs), =clippy.toml=
+- **python-workflow**: =pyproject.toml= (=requires-python = ">=3.11"=,
+  =pydantic= + =rich= deps), =ruff.toml=
+- **haskell-workflow**: =cabal.project=, =fourmolu.yaml= (2-space indent)
+- **web-workflow**: =index.html= (semantic HTML5 boilerplate),
+  =style.css= (CSS custom properties, Flexbox/Grid), =script.js=
+  (ES module skeleton)
+- **shell-workflow**: =script.bash= (with argparse, =set -euo pipefail=,
+  cleanup trap), =script.fish= (parallel fish version)
+- **documentation-workflow**: =README.md= (comprehensive template with sections for
+  overview, installation, quick start, usage, API reference, contributing, license),
+  =CHANGELOG.md= (keepachangelog format), =API.md= (function/type documentation
+  template), =CONTRIBUTING.md= (dev setup, conventions, PR process)
+- **data-engineering-workflow**: (empty — templates pending)
+- **reasoning-workflow**: (empty — templates pending)
+
+* Customization
+
+This configuration is designed to be forked and tailored. Here are the
+common extension points.
+
+** Adding a new subagent
+
+1. Create =agent/<name>.md=:
+
+   #+begin_src markdown
+   ---
+   description: What this agent does.
+   mode: subagent
+   model: <model-name>
+   permission:
+     edit:
+       "**/*.<ext>": allow
+       "*": ask
+   ---
+
+   You are a <domain> specialist. ...
+
+   - Specific guidelines
+   - Preferred libraries
+   - Coding conventions
+   #+end_src
+
+2. Register the agent in =agent/orchestrator.md= by adding it to the
+   "Available subagents" list.
+
+** Adding a new skill
+
+1. Create =skills/<name>/SKILL.md=:
+
+   #+begin_src markdown
+   ---
+   name: <name>
+   description: When to use this skill (appears in the agent's skill list).
+   ---
+
+   # <Skill Name>
+
+   ## Workflow
+   Step-by-step guidance for the domain.
+
+   ## Conventions
+   - Specific rules the agent should follow.
+   #+end_src
+
+2. The skill is automatically discoverable by OpenCode. Agents load it
+   via the =skill= tool when the task matches its description.
+
+** Modifying permissions
+
+Each subagent's frontmatter includes a =permission.edit= block that
+restricts which file patterns the agent can edit without asking. Follow
+the principle of least privilege: only allow the extensions the agent
+actually needs.
+
+** Using a different model provider
+
+Swap the model strings in =opencode.jsonc= and the agent frontmatter.
+If you switch entirely to local models (e.g., all agents use Ollama),
+remove the =small_model= key and use a single =model= for consistency.
+
+* Development
+
+** Validating the configuration
+
+Run the validation script to catch common issues:
+
+#+begin_src bash
+./scripts/validate-config.bash
+#+end_src
+
+This checks:
+- YAML frontmatter in all agent and skill files.
+- Skill directory names match their =name= frontmatter field.
+- Model consistency between =opencode.jsonc= and agent files.
+
+** Conventions for this repo
+
+- Agent files use YAML frontmatter with =description=, =mode=, =model=,
+  and =permission= fields.
+- Skills live in =skills/<name>/SKILL.md= with =name= and =description=
+  in frontmatter. The =name= must match the directory name.
+- Templates go in =skills/<name>/templates/=.
+- The orchestrator =model= field must match =opencode.jsonc='s =model=.
+- Subagents using the "small" tier should have =model= matching
+  =opencode.jsonc='s =small_model=.
+
+** Goals
+
+- Offer agents that excel at multi-agent orchestration of tasks.
+- Offer global skills helpful for single and multi-agent tasks.
+- Use selected technologies:
+  - Nix flakes for environment definition.
+  - Rust for most tasks (high level, great performance, good libraries
+    and type system).
+  - Haskell (excellent type system, good performance).
+  - Python (high level, vast library ecosystem).
+  - Postgres/DuckDB for data handling.
+  - Prolog and solvers like MiniZinc for reasoning.
+  - HTML+vanilla JS for web pages and apps.
