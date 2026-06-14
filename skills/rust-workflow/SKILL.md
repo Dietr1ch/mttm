@@ -13,8 +13,8 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 
 ## Development loop
 
-- `cargo build` / `cargo run`
-- `cargo test` — run tests
+- `cargo check` / `cargo build` / `cargo run`
+- `cargo nextest run` — run tests
 - `cargo clippy` — lint
 - `cargo fmt` — format
 - `cargo doc --open` — build and open docs
