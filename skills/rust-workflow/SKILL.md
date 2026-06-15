@@ -8,7 +8,7 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 ## Project setup
 
 - `cargo new <name>` or `cargo init`
-- Use `cargo add` for dependencies
+- Use `cargo add` / `cargo rm` for adjusting dependencies
 - Prefer `workspace` for multi-crate projects
 
 ## Development loop
