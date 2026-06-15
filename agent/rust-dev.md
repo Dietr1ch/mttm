@@ -3,9 +3,12 @@ description: Rust development specialist for systems and performance-critical co
 mode: subagent
 model: ollama/qwen3-coder
 permission:
+  read:
+    "~/.local/share/cargo/registry/**": allow
+    "Cargo.toml": allow
   edit:
     "**/*.rs": allow
-    "Cargo.toml": allow
+    "Cargo.toml": deny
     "*": ask
 ---
 
