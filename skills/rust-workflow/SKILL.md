@@ -21,7 +21,7 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 
 ## Key crates
 
-- `clap` with `derive` for argument parsing and `env` to read environment variables
+- `clap` with `derive` for argument parsing and `env` to read environment variables. This subsumes `dotenvy`.
 - `config` for configuration
 - `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
 - `log` for logging in library code. `tracing` + `tracing-subscriber` + `tracing-log` in application
