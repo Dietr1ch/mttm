@@ -21,7 +21,7 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 
 ## Key crates
 
-- `clap` with `derive` for argument parsing and `env` to read environment variables. This subsumes `dotenvy`.
+- `clap` with `derive` for argument parsing and `env` to read environment variables. This subsumes `dotenvy`. Pair with `humantime` to parse durations.
 - `config` for configuration
 - `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
 - `log` for logging in library code. `tracing` + `tracing-subscriber` + `tracing-log` in application
@@ -31,7 +31,9 @@ description: Use when writing, building, or debugging Rust code with Cargo.
 - `reqwest` for HTTP clients
 - `axum` for HTTP servers
 - `duckdb`, `polars`, `arrow` for dealing with data
-- `sqlx` for dealing with data
+- `googletest` and `proptest` for testing
+- `diesel-async` using `bb8` and `migrations` for applications using databases and owning the schemas.
+- `sqlx` for using databases where we don't own the schema.
 
 ---
 

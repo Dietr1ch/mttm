@@ -8,12 +8,17 @@ description = "A Rust project"
 clap = { version = "4", features = ["cargo", "derive", "env"] }
 config = "0.15"
 eyre = "0.6"
+humantime = "2"
 log = "0.4"
 thiserror = "2"
 tracing = "0.1"
 tracing-log = "0.2"
 tracing-subscriber = "0.3"
 
+
+[dev-dependencies]
+googletest = "0.14"
+proptest = "1"
 
 # Profiles
 # --------
