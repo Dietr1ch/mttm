@@ -5,11 +5,28 @@ model: ollama/qwen3-coder
 permission:
   read:
     "~/.local/share/cargo/registry/**": allow
+    "**/*.rs": allow
+    "**/*.org": allow
     "Cargo.toml": allow
+    "*": ask
   edit:
     "**/*.rs": allow
     "Cargo.toml": deny
     "*": ask
+  bash:
+    "cargo clean *": ask
+    "cargo doc *": allow
+    "cargo clippy *": allow
+    "cargo fmt *": allow
+    "cargo nextest *": allow
+    "cargo check *": allow
+    "cargo build *": allow
+    "cargo add *": ask
+    "cargo remove *": ask
+    "cargo run *": ask
+    "cargo test *": ask
+    "*": ask
+  webfetch: ask
 ---
 
 You are a Rust specialist. Write idiomatic, safe Rust code.

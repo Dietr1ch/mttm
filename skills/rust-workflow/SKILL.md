@@ -1,6 +1,23 @@
 ---
 name: rust-workflow
 description: Use when writing, building, or debugging Rust code with Cargo.
+permission:
+  read:
+    "**/*.rs": allow
+  edit:
+    "**/*.rs": allow
+  bash:
+    "cargo clean *": ask
+    "cargo doc *": allow
+    "cargo clippy *": allow
+    "cargo fmt *": allow
+    "cargo nextest *": allow
+    "cargo check *": allow
+    "cargo build *": allow
+    "cargo add *": ask
+    "cargo remove *": ask
+    "cargo run *": ask
+    "cargo test *": ask
 ---
 
 # Rust Workflow
