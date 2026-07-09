@@ -1,6 +1,11 @@
 ---
 name: nix-flake
 description: Use when setting up or modifying Nix flake environments for reproducible dev shells.
+permission:
+  read:
+    "**/*.nix": allow
+  bash:
+    "nix search nixpkgs *": allow
 ---
 
 # Nix Flake
