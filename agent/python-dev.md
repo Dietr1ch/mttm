@@ -1,7 +1,7 @@
 ---
 description: Python development specialist for scripting, libraries, and data science.
 mode: subagent
-model: ollama/qwen3-coder
+model: ollama/qwen3-coder:30b
 permission:
   edit:
     "**/*.py": allow

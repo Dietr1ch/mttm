@@ -1,7 +1,7 @@
 ---
 description: Web development specialist for HTML and vanilla JavaScript.
 mode: subagent
-model: ollama/qwen3-coder
+model: ollama/qwen3-coder:30b
 permission:
   edit:
     "**/*.html": allow

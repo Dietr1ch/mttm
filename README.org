@@ -42,54 +42,57 @@ The project is designed to be:
 
 The system follows a hub-and-spoke pattern:
 
-#+begin_src mermaid :file docs/architecture.png :exports both
-flowchart TB
-    User([User]) -->|request| ORC[Orchestrator<br/>deepseek-v4-flash]
+#+begin_src mermaid :file .img/architecture.png :width 1024px :exports both
+  flowchart TB
+      User([User]) -->|request| ORC[Orchestrator<br/>deepseek-v4-flash]
 
-    subgraph Subagents [Specialized Subagents]
-        RS[rust-dev<br/>qwen3-coder]
-        HS[haskell-dev<br/>deepseek-v4-flash]
-        PY[python-dev<br/>qwen3-coder]
-        DE[data-engineer<br/>deepseek-v4-flash]
-        RE[reasoning-engineer<br/>deepseek-v4-pro]
-        WB[web-dev<br/>qwen3-coder]
-        DD[doc-dev<br/>deepseek-v4-flash]
-    end
+      subgraph Subagents [Specialized Subagents]
+          RS[rust-dev<br/>qwen3-coder]
+          HS[haskell-dev<br/>deepseek-v4-flash]
+          PY[python-dev<br/>qwen3-coder]
+          DE[data-engineer<br/>deepseek-v4-flash]
+          RE[reasoning-engineer<br/>deepseek-v4-pro-thinking]
+          WB[web-dev<br/>qwen3-coder]
+          DD[doc-dev<br/>deepseek-v4-flash]
+      end
 
-    ORC -->|task tool| RS
-    ORC -->|task tool| HS
-    ORC -->|task tool| PY
-    ORC -->|task tool| DE
-    ORC -->|task tool| RE
-    ORC -->|task tool| WB
-    ORC -->|task tool| DD
+      ORC -->|task tool| RS
+      ORC -->|task tool| HS
+      ORC -->|task tool| PY
+      ORC -->|task tool| DE
+      ORC -->|task tool| RE
+      ORC -->|task tool| WB
+      ORC -->|task tool| DD
 
-    subgraph Skills [On-Demand Skills]
-        SK1[rust-workflow]
-        SK2[haskell-workflow]
-        SK3[python-workflow]
-        SK4[data-engineering-workflow]
-        SK5[reasoning-workflow]
-        SK6[web-workflow]
-        SK7[shell-workflow]
-        SK8[nix-flake]
-        SK9[customize-opencode]
-        SK10[multi-agent]
-        SK11[documentation-workflow]
-    end
+      subgraph Skills [On-Demand Skills]
+          SK1[rust-workflow]
+          SK2[haskell-workflow]
+          SK3[python-workflow]
+          SK4[data-engineering-workflow]
+          SK5[reasoning-workflow]
+          SK6[web-workflow]
+          SK7[shell-workflow]
+          SK8[nix-flake]
+          SK9[customize-opencode]
+          SK10[multi-agent]
+          SK11[documentation-workflow]
+      end
 
-    RS -.->|skill tool| SK1
-    HS -.->|skill tool| SK2
-    PY -.->|skill tool| SK3
-    DE -.->|skill tool| SK4
-    RE -.->|skill tool| SK5
-    WB -.->|skill tool| SK6
-    DD -.->|skill tool| SK11
-    ORC -.->|skill tool| SK8
-    ORC -.->|skill tool| SK9
-    ORC -.->|skill tool| SK10
-    ORC -.->|skill tool| SK7
+      RS -.->|skill tool| SK1
+      HS -.->|skill tool| SK2
+      PY -.->|skill tool| SK3
+      DE -.->|skill tool| SK4
+      RE -.->|skill tool| SK5
+      WB -.->|skill tool| SK6
+      DD -.->|skill tool| SK11
+      ORC -.->|skill tool| SK8
+      ORC -.->|skill tool| SK9
+      ORC -.->|skill tool| SK10
+      ORC -.->|skill tool| SK7
 #+end_src
+
+#+RESULTS:
+[[file:.img/architecture.png]]
 
 ** How it works
 
@@ -179,7 +182,7 @@ and latency:
 | Documentation subagent   | =deepseek/deepseek-v4-flash=   | Strong language understanding for clear, structured docs      |
 | Haskell subagent         | =deepseek/deepseek-v4-flash=   | Haskell's type system benefits from stronger reasoning        |
 | Data Engineering         | =deepseek/deepseek-v4-flash=   | Schema design and query optimization need deeper analysis     |
-| Reasoning/Constraint     | =deepseek/deepseek-v4-pro=     | Prolog/MiniZinc require the strongest reasoning model         |
+| Reasoning/Constraint     | =deepseek/deepseek-v4-pro-thinking=     | Prolog/MiniZinc require the strongest reasoning model         |
 
 ** When to use which model
 
@@ -187,7 +190,7 @@ and latency:
   reasoning depth and response speed. Used by the orchestrator (needs to
   plan and integrate) and by subagents whose domains benefit from deeper
   reasoning (Haskell types, SQL optimization).
-- **=deepseek/deepseek-v4-pro=** — heavy reasoning. Used only by the
+- **=deepseek/deepseek-v4-pro-thinking=** — heavy reasoning. Used only by the
   reasoning-engineer subagent for Prolog, MiniZinc, SAT/SMT, and
   constraint satisfaction where correctness depends on precise logical
   inference.
@@ -212,16 +215,16 @@ To use a different model, edit =opencode.jsonc=:
 
 * Agent Reference
 
-| Agent                | Mode      | Model                        | Delegation trigger                                        |
-|----------------------+-----------+------------------------------+-----------------------------------------------------------|
-| orchestrator         | primary   | deepseek/deepseek-v4-flash   | Entry point for all requests                              |
-| rust-dev             | subagent  | ollama/qwen3-coder           | Rust/Cargo code, perf-critical systems                    |
-| haskell-dev          | subagent  | deepseek/deepseek-v4-flash   | Haskell/Cabal/Stack code, pure-functional design          |
-| python-dev           | subagent  | ollama/qwen3-coder           | Python scripts, libraries, data science, automation       |
-| data-engineer        | subagent  | deepseek/deepseek-v4-flash   | SQL schemas, DuckDB, Postgres, ETL pipelines              |
-| reasoning-enginee   | subagent  | deepseek/deepseek-v4-pro     | Prolog, MiniZinc, SAT/SMT, constraint solving             |
-| web-dev              | subagent  | ollama/qwen3-coder           | HTML, vanilla CSS/JS, no frameworks                       |
-| doc-dev              | subagent  | deepseek/deepseek-v4-flash   | READMEs, API docs, tutorials, changelogs, technical writing |
+| Agent             | Mode     | Model                             | Delegation trigger                                          |
+|-------------------+----------+-----------------------------------+-------------------------------------------------------------|
+| orchestrator      | primary  | deepseek/deepseek-v4-flash        | Entry point for all requests                                |
+| rust-dev          | subagent | ollama/qwen3-coder:30b            | Rust/Cargo code, perf-critical systems                      |
+| haskell-dev       | subagent | deepseek/deepseek-v4-flash        | Haskell/Cabal/Stack code, pure-functional design            |
+| python-dev        | subagent | ollama/qwen3-coder:30b            | Python scripts, libraries, data science, automation         |
+| data-engineer     | subagent | deepseek/deepseek-v4-flash        | SQL schemas, DuckDB, Postgres, ETL pipelines                |
+| reasoning-enginee | subagent | deepseek/deepseek-v4-pro-thinking | Prolog, MiniZinc, SAT/SMT, constraint solving               |
+| web-dev           | subagent | ollama/qwen3-coder:30b            | HTML, vanilla CSS/JS, no frameworks                         |
+| doc-dev           | subagent | deepseek/deepseek-v4-flash        | READMEs, API docs, tutorials, changelogs, technical writing |
 
 ** Orchestrator
 
