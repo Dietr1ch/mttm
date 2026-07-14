@@ -14,6 +14,7 @@ permission:
     "cargo nextest *": allow
     "cargo check *": allow
     "cargo build *": allow
+    "cargo search *": allow
     "cargo add *": ask
     "cargo remove *": ask
     "cargo run *": ask
@@ -42,15 +43,15 @@ permission:
 - `config` for configuration
 - `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
 - `log` for logging in library code. `tracing` + `tracing-subscriber` + `tracing-log` in application
+- `googletest` and `proptest` for testing.
 - `serde` + `serde_ron` / `serde_json` for serialization
+  - Use `googletest_json_serde` to write patterns for JSON data.
 - `rayon` for parallelism
 - `tokio` for async
 - `reqwest` for HTTP clients
 - `axum` for HTTP servers
   - Also use `axum-test` when testing.
 - `duckdb`, `polars`, `arrow` for dealing with data
-- `googletest` and `proptest` for testing.
-  - Use `googletest_json_serde` to write patterns for JSON data.
 - `diesel-async` using `bb8` and `migrations` for applications using databases and owning the schemas.
 - `sqlx` for using databases where we don't own the schema.
 
