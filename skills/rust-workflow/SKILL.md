@@ -47,8 +47,10 @@ permission:
 - `tokio` for async
 - `reqwest` for HTTP clients
 - `axum` for HTTP servers
+  - Also use `axum-test` when testing.
 - `duckdb`, `polars`, `arrow` for dealing with data
-- `googletest` and `proptest` for testing
+- `googletest` and `proptest` for testing.
+  - Use `googletest_json_serde` to write patterns for JSON data.
 - `diesel-async` using `bb8` and `migrations` for applications using databases and owning the schemas.
 - `sqlx` for using databases where we don't own the schema.
 
