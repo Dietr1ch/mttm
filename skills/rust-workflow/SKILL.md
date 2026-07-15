@@ -39,7 +39,9 @@ permission:
 
 ## Key crates
 
-- `clap` with `derive` for argument parsing and `env` to read environment variables. This subsumes `dotenvy`. Pair with `humantime` to parse durations.
+- `clap` with `derive` for argument parsing and `env` to read environment variables.
+  - Pair with `humantime` to parse durations.
+  - Pair with `clap_complete` if shell auto-completion is needed.
 - `config` for configuration
 - `thiserror` for error handling in libraries. `eyre` is preferred in `src/bin/`
 - `log` for logging in library code. `tracing` + `tracing-subscriber` + `tracing-log` in application
