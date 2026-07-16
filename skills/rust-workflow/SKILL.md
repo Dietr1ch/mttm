@@ -53,8 +53,9 @@ permission:
 - `reqwest` for HTTP clients
 - `axum` for HTTP servers
   - Also use `axum-test` when testing.
+  - Use `yauth` for authentication
 - `duckdb`, `polars`, `arrow` for dealing with data
-- `diesel-async` using `bb8` and `migrations` for applications using databases and owning the schemas.
+- `diesel-async` using `bb8` and `migrations` for applications using databases and owning the schemata.
 - `sqlx` for using databases where we don't own the schema.
 
 ---
