@@ -6,6 +6,21 @@ permission:
     "**/*.nix": allow
   bash:
     "nix search nixpkgs *": allow
+    "nix log *": allow
+    "nix-prefetch *": allow
+    "nix-prefetch-git *": allow
+    "nix-prefetch-github *": allow
+    "strings *": allow
+    "nm *": allow
+    "readelf *": allow
+    "objdump *": allow
+    "head *": allow
+    "tail *": allow
+    "grep *": allow
+    "awk *": allow
+    "gawk *": allow
+    "xargs *": allow
+    "parallel *": allow
 ---
 
 # Nix Flake
