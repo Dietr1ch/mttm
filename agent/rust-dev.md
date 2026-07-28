@@ -1,7 +1,7 @@
 ---
 description: Rust development specialist for systems and performance-critical code.
 mode: subagent
-model: ollama/qwen3-coder:30b
+model: deepseek/deepseek-v4-flash
 permission:
   read:
     "~/.local/share/cargo/registry/**": allow
