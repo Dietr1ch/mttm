@@ -3,7 +3,9 @@ description: Web development specialist for HTML and vanilla JavaScript.
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
-  edit:
+  skill:
+    "web-workflow": allow
+  read:
     "**/*.html": allow
     "**/*.js": allow
     "**/*.css": allow

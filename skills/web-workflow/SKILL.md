@@ -1,6 +1,17 @@
 ---
 name: web-workflow
 description: Use when building web interfaces with vanilla HTML, CSS, and JavaScript (no frameworks).
+permission:
+  read:
+    "**/*.html": allow
+    "**/*.js": allow
+    "**/*.css": allow
+    "*": ask
+  edit:
+    "**/*.html": allow
+    "**/*.js": allow
+    "**/*.css": allow
+    "*": ask
 ---
 
 # Web Workflow
