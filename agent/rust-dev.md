@@ -3,6 +3,8 @@ description: Rust development specialist for systems and performance-critical co
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
+  skill:
+    "rust-workflow": allow
   read:
     "~/.local/share/cargo/registry/**": allow
     "**/*.rs": allow
@@ -14,17 +16,12 @@ permission:
     "Cargo.toml": deny
     "*": ask
   bash:
-    "cargo clean *": ask
     "cargo doc *": allow
     "cargo clippy *": allow
     "cargo fmt *": allow
     "cargo nextest *": allow
     "cargo check *": allow
     "cargo build *": allow
-    "cargo add *": ask
-    "cargo remove *": ask
-    "cargo run *": ask
-    "cargo test *": ask
     "*": ask
   webfetch: ask
 ---
