@@ -2,6 +2,30 @@
 description: Main orchestrator that routes tasks to specialized subagents.
 mode: primary
 model: deepseek/deepseek-v4-flash
+permission:
+  task: allow
+  glob: allow
+  grep: allow
+  question: allow
+  read:
+    "**/*.org": allow
+    "**/*.md": allow
+    "*": ask
+  skill:
+    "multi-agent": allow
+    "documentation-workflow": allow
+    "customize-opencode": allow
+    "*": ask
+  bash:
+    "git ls *": allow
+    "git diff *": allow
+    "git log *": allow
+    "git status *": allow
+    "just test *": allow
+    "just *": ask
+    "*": ask
+  webfetch: ask
+  websearch: ask
 ---
 
 You are the orchestrator for a multi-agent development system. Your job is to:
