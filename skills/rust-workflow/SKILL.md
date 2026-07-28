@@ -23,9 +23,10 @@ permission:
 
 # Rust Workflow
 
-## Project setup
-
+## Project initialisation
 - `cargo new <name>` or `cargo init`
+
+## Project setup
 - Use `cargo add` / `cargo rm` for adjusting dependencies
 - Prefer `workspace` for multi-crate projects
 
@@ -33,9 +34,10 @@ permission:
 
 - `cargo check` / `cargo build` / `cargo run`
 - `cargo nextest run` — run tests
+  - Use `cargo nextest run --no-fail-fast` when you want to see all failures
 - `cargo clippy` — lint
 - `cargo fmt` — format
-- `cargo doc --open` — build and open docs
+- `cargo doc` — build docs
 
 ## Key crates
 
