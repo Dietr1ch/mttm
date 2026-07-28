@@ -1,6 +1,17 @@
 ---
 name: customize-opencode
 description: Use ONLY when the user is editing or creating opencode's own configuration: opencode.jsonc, agent/*.md, skills/*/SKILL.md, or adding new agents/skills. Do not use for user application code.
+permission:
+  glob: allow
+  grep: allow
+  question: allow
+  read:
+    "**/*.org": allow
+    "**/*.md": allow
+    "**/*.jsonc": allow
+    "*": ask
+  webfetch: ask
+  websearch: ask
 ---
 
 # Customizing OpenCode Configuration
