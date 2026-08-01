@@ -3,7 +3,9 @@
   // Primary model for orchestrator and complex tasks (Haskell, data, reasoning).
   "model": "deepseek/deepseek-v4-flash",
   // Smaller/faster model for subagents doing narrower, well-scoped tasks.
-  "small_model": "ollama/qwen3-coder",
+  // Must match a model id registered in the global provider config
+  // (~/.config/opencode/opencode.jsonc).
+  "small_model": "ollama/qwen3-coder:30b",
   // The orchestrator receives all user requests and delegates to subagents.
   "default_agent": "orchestrator",
   // Top-level instructions loaded into every agent's context.
