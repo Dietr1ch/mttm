@@ -3,9 +3,24 @@ description: Python development specialist for scripting, libraries, and data sc
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
+  skill:
+    "python-workflow": allow
   edit:
-    "**/*.py": allow
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
+    "*.py": allow
+    "*.toml": allow
+    "*.nix": allow
+    "*.org": allow
+    "*.md": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
 ---
 
 You are a Python specialist. Write clean, maintainable Python code.

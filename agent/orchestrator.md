@@ -8,22 +8,39 @@ permission:
   grep: allow
   question: allow
   read:
-    "**/*.org": allow
-    "**/*.md": allow
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
+    "*.org": allow
+    "*.md": allow
+    "*.py": allow
+    "*.toml": allow
+    "*.nix": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.txt": allow
+    "*.lock": allow
+    "*.csv": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
   skill:
+    "*": ask
     "multi-agent": allow
     "documentation-workflow": allow
     "customize-opencode": allow
-    "*": ask
   bash:
-    "git ls *": allow
+    # No "*": "ask" or broad "just *"/"git *": "ask" here: agent rules are
+    # evaluated after the user config (last match wins), so catch-alls would
+    # nullify the read-only grants in ~/.config/opencode (cat/grep/head/tail/
+    # wc/sort/uniq, git read-only subcommands, just *). Only specific
+    # allowances live here; everything else falls through to the user
+    # config's "*": "ask".
+    "git ls-files *": allow
     "git diff *": allow
     "git log *": allow
     "git status *": allow
     "just test *": allow
-    "just *": ask
-    "*": ask
   webfetch: ask
   websearch: ask
 ---

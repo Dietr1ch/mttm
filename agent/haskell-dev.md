@@ -3,9 +3,25 @@ description: Haskell development specialist for pure-functional and type-safe co
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
+  skill:
+    "haskell-workflow": allow
   edit:
-    "**/*.hs": allow
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
+    "*.hs": allow
+    "*.cabal": allow
+    "*.toml": allow
+    "*.nix": allow
+    "*.org": allow
+    "*.md": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
 ---
 
 You are a Haskell specialist. Write idiomatic, type-safe Haskell code.

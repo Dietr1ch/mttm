@@ -9,23 +9,49 @@ permission:
   grep: allow
   question: allow
   read:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
     "~/.local/share/cargo/registry/**": allow
-    "**/*.rs": allow
-    "**/*.org": allow
-    "Cargo.toml": allow
-    "*": ask
+    "*.rs": allow
+    "*.org": allow
+    "*.md": allow
+    "*.toml": allow
+    "*.nix": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
   edit:
-    "**/*.rs": allow
-    "Cargo.toml": deny
     "*": ask
+    "*.rs": allow
+    "*.md": allow
+    "*.org": allow
+    "*.nix": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
+    "*.toml": allow
+    "Cargo.toml": deny
   bash:
+    # No "*": "ask" catch-all: agent rules are evaluated after the user
+    # config (last match wins), so a catch-all would nullify the read-only
+    # tool grants in ~/.config/opencode. Only cargo allowances live here;
+    # everything else falls through to the user config's "*": "ask".
     "cargo doc *": allow
     "cargo clippy *": allow
     "cargo fmt *": allow
     "cargo nextest *": allow
     "cargo check *": allow
     "cargo build *": allow
-    "*": ask
   webfetch: ask
   websearch: ask
 ---

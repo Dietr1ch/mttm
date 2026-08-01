@@ -3,10 +3,27 @@ description: Data engineering specialist for Postgres and DuckDB.
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
+  skill:
+    "data-engineering-workflow": allow
   edit:
-    "**/*.sql": allow
-    "**/*.duckdb": allow
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
+    "*.sql": allow
+    "*.duckdb": allow
+    "*.py": allow
+    "*.toml": allow
+    "*.csv": allow
+    "*.org": allow
+    "*.md": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.nix": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
 ---
 
 You are a data engineering specialist. Focus on efficient data storage, querying, and transformation.

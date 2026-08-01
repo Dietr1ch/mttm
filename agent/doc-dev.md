@@ -3,14 +3,26 @@ description: Documentation specialist for READMEs, API docs, tutorials, and tech
 mode: subagent
 model: deepseek/deepseek-v4-flash
 permission:
+  skill:
+    "documentation-workflow": allow
   edit:
-    "**/*.md": allow
-    "**/*.org": allow
-    "**/*.txt": allow
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
+    "*.md": allow
+    "*.org": allow
+    "*.txt": allow
     "**/CHANGELOG*": allow
     "**/LICENSE*": allow
-    "**/*.ronn": allow
-    "*": ask
+    "*.ronn": allow
+    "*.json": allow
+    "*.yaml": allow
+    "*.yml": allow
+    "*.toml": allow
+    "*.nix": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
 ---
 
 You are a documentation specialist. Your job is to write clear, structured, and
