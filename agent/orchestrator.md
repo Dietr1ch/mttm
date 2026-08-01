@@ -13,6 +13,17 @@ permission:
     "*.org": allow
     "*.md": allow
     "*.py": allow
+    "*.rs": allow
+    "*.hs": allow
+    "*.js": allow
+    "*.css": allow
+    "*.html": allow
+    "*.sql": allow
+    "*.sh": allow
+    "*.fish": allow
+    "*.pl": allow
+    "*.mzn": allow
+    "*.dzn": allow
     "*.toml": allow
     "*.nix": allow
     "*.json": allow
