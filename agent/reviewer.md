@@ -25,17 +25,20 @@ permission:
     "security-review": allow
   bash:
     # Read-only git inspection only. The review-only guarantee is enforced
-    # here, not just by the prompt: agent rules override the user config's
-    # bash allow, so these are hard blocks.
+    # here, not just by the prompt: a catch-all deny blocks everything the
+    # read-only allows below don't explicitly cover (last-match-wins).
+    # Both bare commands and commands with arguments are allowed explicitly,
+    # since a pattern like "git diff *" only matches commands with args.
+    "*": deny
+    "git diff": allow
     "git diff *": allow
     "git show *": allow
+    "git log": allow
     "git log *": allow
+    "git status": allow
     "git status *": allow
+    "git ls-files": allow
     "git ls-files *": allow
-    "git add *": deny
-    "git commit *": deny
-    "git push *": deny
-    "git reset *": deny
   webfetch: ask
   websearch: ask
 ---
