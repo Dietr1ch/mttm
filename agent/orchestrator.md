@@ -27,6 +27,7 @@ permission:
     "*.toml": allow
     "*.nix": allow
     "*.json": allow
+    "*.jsonc": allow
     "*.yaml": allow
     "*.yml": allow
     "*.txt": allow
