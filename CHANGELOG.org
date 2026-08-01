@@ -1,0 +1,50 @@
+#+title: CHANGELOG
+#+subtitle: Work log for the mttm configuration
+
+All notable changes to the mttm configuration, newest first. Sections
+follow the [[https://keepachangelog.com][keepachangelog]] categories; each
+entry cites the commit that made the change. Resolved roadmap items are
+archived here from =docs/ROADMAP.org= (org-mode archive pattern: the
+roadmap tracks only open work).
+
+* 2026-08-01
+
+** Fixed
+
+- Orchestrator: allow the skills its prompt advertises (=nix-flake=,
+  =devenv=, =shell-workflow=) in =permission.skill= (585b9dc)
+- Orchestrator: allow reading =opencode.jsonc= in the =read= block
+  (dcaa8db)
+- Agents: re-deny secret file reads (=.env=, =*.gpg=) in orchestrator,
+  rust-dev, and web-dev (3b9e18b)
+- Skills: fix =write:= key in the devenv skill (now =edit:=) (a8bc5b0)
+- Agents: match bare git/cargo commands in orchestrator and rust-dev
+  bash allow lists (3cf784f)
+- Agents: switch reviewer and reasoning-engineer off
+  =deepseek-v4-pro-thinking= (rejected with HTTP 400) to
+  =deepseek/deepseek-v4-pro= (f8e353c)
+- Config: align =small_model= with the registered =ollama/qwen3-coder:30b=
+  model (e5e512a)
+- Rust-dev: restore =Cargo.toml= edit permission (accidental deny
+  removed) (d5deb1c)
+
+** Changed
+
+- Skills: fix permission catch-all ordering in web-workflow and
+  customize-opencode (1ebd65b)
+- Reviewer: enforce read-only bash with a catch-all deny (769f27e)
+- Reviewer: document the pipe-based bash write bypass as accepted risk
+  (d3353bb)
+- Doc-dev: extend edit scope to the team's languages (a17867b)
+- Web-dev: add least-privilege edit permissions (56750e5)
+- Scripts: strengthen =validate-config.bash= (permission keys,
+  catch-all ordering, model mapping) (e257af6)
+- Docs: align README model strategy with the actual agent models
+  (804282b)
+
+** Verified
+
+- Secret-read deny merge behavior verified live for orchestrator,
+  rust-dev, and web-dev (a19fa18)
+- Permission matching semantics confirmed as last-match-wins against the
+  official Permissions docs (no config change needed)

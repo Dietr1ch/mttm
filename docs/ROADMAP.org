@@ -1,51 +1,14 @@
 #+title: ROADMAP
-#+subtitle: Minor follow-ups for the mttm configuration
+#+subtitle: Open follow-ups for the mttm configuration
 
-Follow-up items identified during the configuration review (August 2026).
+Follow-up items for the mttm configuration, tracked until resolved.
 Priorities use org-mode's default scale, #A to #C: [#A] major, [#B]
-moderate, [#C] minor. Everything here was tagged [#C]; items were
-ordered by impact, most useful first.
+moderate, [#C] minor.
 
-All items are resolved (2026-08-01). This file keeps a compact record of
-what was done and why, with each entry referencing the commit that fixed
-it.
+Resolved items are archived to =../CHANGELOG.org= (org-mode archive
+pattern); this file tracks only open work. The configuration review
+(2026-08-01) raised no remaining open items.
 
-* Recently completed
+* Items
 
-Items from the review that were already fixed when the roadmap was
-written:
-
-- Permission catch-all ordering in web-workflow and customize-opencode
-- Devenv skill =write:= key (does not exist; now =edit:=)
-- Reviewer read-only guarantee enforced with a bash catch-all deny
-- README model strategy aligned with the actual agent models
-- Least-privilege edit block added to web-dev
-- Secret file reads (=.env=, =*.gpg=) re-denied in orchestrator,
-  rust-dev, and web-dev
-- Accidental =Cargo.toml= deny removed from rust-dev
-
-* Resolved items
-
-Remaining items, resolved 2026-08-01:
-
-- Orchestrator: allow the skills its prompt advertises (=nix-flake=,
-  =devenv=, =shell-workflow=) in =permission.skill= — commit 585b9dc
-- Orchestrator: allow reading =opencode.jsonc= in the =read= block —
-  commit dcaa8db
-- Secret-read deny merge behavior verified live for orchestrator,
-  rust-dev, and web-dev — commit a19fa18
-- Permission matching semantics confirmed as last-match-wins against the
-  official Permissions docs; no config change needed
-- =scripts/validate-config.bash= strengthened (permission keys,
-  catch-all ordering, model mapping) — commit e257af6
-- Reviewer empty responses root-caused: =deepseek-v4-pro-thinking= is
-  rejected with HTTP 400; reviewer and reasoning-engineer switched to
-  =deepseek/deepseek-v4-pro= — commits f8e353c, 6c71ba6
-- Reviewer: pipe-based bash write bypass documented as accepted risk —
-  commit d3353bb
-- Bare git/cargo commands matched in orchestrator and rust-dev bash
-  allow lists — commit 3cf784f
-- Doc-dev edit scope confirmed and extended to the team's languages —
-  commit a17867b
-- =small_model= aligned with the registered =ollama/qwen3-coder:30b=
-  model — commit e5e512a
+None currently.
