@@ -51,11 +51,20 @@ permission:
     # config (last match wins), so a catch-all would nullify the read-only
     # tool grants in ~/.config/opencode. Only cargo allowances live here;
     # everything else falls through to the user config's "*": "ask".
+    # Both bare commands and commands with arguments are allowed: a pattern
+    # like "cargo check *" only matches commands with arguments, so bare
+    # "cargo check" would otherwise fall through to the global bash default.
+    "cargo doc": allow
     "cargo doc *": allow
+    "cargo clippy": allow
     "cargo clippy *": allow
+    "cargo fmt": allow
     "cargo fmt *": allow
+    "cargo nextest": allow
     "cargo nextest *": allow
+    "cargo check": allow
     "cargo check *": allow
+    "cargo build": allow
     "cargo build *": allow
   webfetch: ask
   websearch: ask

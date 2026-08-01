@@ -58,14 +58,22 @@ permission:
     # here — agent rules are evaluated after the user config (last match
     # wins), so a "*": "ask" would nullify the read-only grants in
     # ~/.config/opencode. Everything else falls through to the user config.
+    # Both bare commands and commands with arguments are allowed: a pattern
+    # like "git diff *" only matches commands with arguments, so bare
+    # "git diff" would otherwise fall through to the global bash default.
+    "git ls-files": allow
     "git ls-files *": allow
+    "git diff": allow
     "git diff *": allow
+    "git log": allow
     "git log *": allow
+    "git status": allow
     "git status *": allow
     "git add *": allow
     "git commit *": allow
     "git mv *": allow
     "git rm *": allow
+    "just test": allow
     "just test *": allow
   webfetch: ask
   websearch: ask
