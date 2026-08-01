@@ -11,6 +11,18 @@ permission:
   question: allow
   # `read` is intentionally omitted: it inherits the user config, which allows
   # reading any project file while still denying secrets (*.env, *.gpg).
+  skill:
+    # Specialised eyes: load the domain skill for the code being reviewed,
+    # and the security-review skill for anything security-sensitive.
+    "*": ask
+    "rust-workflow": allow
+    "haskell-workflow": allow
+    "python-workflow": allow
+    "web-workflow": allow
+    "shell-workflow": allow
+    "data-engineering-workflow": allow
+    "documentation-workflow": allow
+    "security-review": allow
   bash:
     # Read-only git inspection only. The review-only guarantee is enforced
     # here, not just by the prompt: agent rules override the user config's
@@ -55,8 +67,9 @@ The orchestrator gives you:
      project's coding docs if present (e.g. `docs/CODING.org`,
      `docs/TESTING.org`)
    - **Scope**: any unrelated changes bundled into the diff?
-4. If the project has no explicit style guide, consult the relevant domain
-   skill (`skill` tool) for conventions.
+4. Load the relevant domain skill (`skill` tool) for conventions when the
+   project has no explicit style guide. For security-sensitive changes, load
+   the **security-review** skill and audit against its checklist.
 
 # Output format
 

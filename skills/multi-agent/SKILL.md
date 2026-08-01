@@ -40,6 +40,8 @@ an edit to the configuration itself, or too small to justify a round-trip.
   pass from @reviewer.
 - The reviewer reports findings with severity (BLOCKING / NON-BLOCKING / NIT);
   it never edits and never commits.
+- For security-sensitive changes, the reviewer loads the **security-review**
+  skill and audits against its checklist.
 - Blocking findings are fixed (possibly by re-delegating to the specialist)
   before the commit.
 

@@ -25,7 +25,7 @@ This project turns OpenCode into a coordinated team of specialists:
 - **8 subagents** – domain experts for Rust, Haskell, Python, data
   engineering, reasoning/constraint solving, web development, documentation,
   and code review.
-- **12 skills** – on-demand workflow guidance loaded by agents when a task
+- **13 skills** – on-demand workflow guidance loaded by agents when a task
   matches the skill's domain.
 - **Nix flake support** – reproducible development environments for every
   language stack (environment definitions via [[https://nixos.wiki/wiki/Flakes][Nix flakes]]).
@@ -80,6 +80,7 @@ The system follows a hub-and-spoke pattern:
           SK10[multi-agent]
           SK11[documentation-workflow]
           SK12[devenv]
+          SK13[security-review]
       end
 
       RS -.->|skill tool| SK1
@@ -94,6 +95,7 @@ The system follows a hub-and-spoke pattern:
       ORC -.->|skill tool| SK10
       ORC -.->|skill tool| SK7
       ORC -.->|skill tool| SK12
+      RV -.->|skill tool| SK13
 #+end_src
 
 #+RESULTS:
@@ -134,7 +136,7 @@ skills/
   <name>/
     SKILL.md                Domain skill (loaded on demand)
     templates/              Starter files for the domain
-  ...                       (12 skills total, listed below)
+  ...                       (13 skills total, listed below)
 
 scripts/
   validate-config.bash      Sanity-check the configuration
@@ -284,6 +286,7 @@ description. They provide detailed workflows, conventions, and templates.
 | customize-opencode       | orchestrator                | This project's own structure and conventions           |
 | multi-agent              | orchestrator                | Orchestration patterns and task decomposition guide    |
 | documentation-workflow   | doc-dev                     | Doc templates, style guide, conventions for README/API/changelog |
+| security-review          | reviewer                    | Security audit checklist: auth, injection, secrets, deserialization, crypto, deps |
 
 ** Template files
 
