@@ -19,6 +19,20 @@ permission:
     "Justfile": allow
     "*/Justfile": allow
     ".gitignore": allow
+  edit:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
+    "*.html": allow
+    "*.js": allow
+    "*.css": allow
+    "*.json": allow
+    "*.org": allow
+    "*.md": allow
+    "*.txt": allow
+    "*.lock": allow
+    "Justfile": allow
+    "*/Justfile": allow
+    ".gitignore": allow
 ---
 
 You are a web development specialist. Build with vanilla HTML, CSS, and JS.
