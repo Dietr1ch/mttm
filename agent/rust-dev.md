@@ -46,7 +46,6 @@ permission:
     "*/Justfile": allow
     ".gitignore": allow
     "*.toml": allow
-    "Cargo.toml": deny
   bash:
     # No "*": "ask" catch-all: agent rules are evaluated after the user
     # config (last match wins), so a catch-all would nullify the read-only
