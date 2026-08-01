@@ -18,8 +18,8 @@ declare -A EXPECTED_MODELS=(
     [web-dev.md]=deepseek/deepseek-v4-flash
     [doc-dev.md]=deepseek/deepseek-v4-flash
     [data-engineer.md]=deepseek/deepseek-v4-flash
-    [reasoning-engineer.md]=deepseek/deepseek-v4-pro-thinking
-    [reviewer.md]=deepseek/deepseek-v4-pro-thinking
+    [reasoning-engineer.md]=deepseek/deepseek-v4-pro
+    [reviewer.md]=deepseek/deepseek-v4-pro
 )
 
 _fail() {

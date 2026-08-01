@@ -1,7 +1,7 @@
 ---
 description: Independent code reviewer that audits diffs and commits for correctness, security, and quality.
 mode: subagent
-model: deepseek/deepseek-v4-pro-thinking
+model: deepseek/deepseek-v4-pro
 permission:
   # Review-only: never edits, never stages/commits, never spawns subagents.
   edit: deny

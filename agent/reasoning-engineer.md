@@ -1,7 +1,7 @@
 ---
 description: Reasoning specialist for Prolog, MiniZinc, and constraint solving.
 mode: subagent
-model: deepseek/deepseek-v4-pro-thinking
+model: deepseek/deepseek-v4-pro
 permission:
   skill:
     "reasoning-workflow": allow
