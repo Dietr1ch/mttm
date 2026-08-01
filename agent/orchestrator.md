@@ -41,16 +41,20 @@ permission:
     "documentation-workflow": allow
     "customize-opencode": allow
   bash:
-    # No "*": "ask" or broad "just *"/"git *": "ask" here: agent rules are
-    # evaluated after the user config (last match wins), so catch-alls would
-    # nullify the read-only grants in ~/.config/opencode (cat/grep/head/tail/
-    # wc/sort/uniq, git read-only subcommands, just *). Only specific
-    # allowances live here; everything else falls through to the user
-    # config's "*": "ask".
+    # The orchestrator owns git operations for its small-reviewed-commit
+    # workflow: staging, committing, moving, and removing files (not all
+    # changes are additions). Plus read-only inspection. No broad catch-alls
+    # here — agent rules are evaluated after the user config (last match
+    # wins), so a "*": "ask" would nullify the read-only grants in
+    # ~/.config/opencode. Everything else falls through to the user config.
     "git ls-files *": allow
     "git diff *": allow
     "git log *": allow
     "git status *": allow
+    "git add *": allow
+    "git commit *": allow
+    "git mv *": allow
+    "git rm *": allow
     "just test *": allow
   webfetch: ask
   websearch: ask
