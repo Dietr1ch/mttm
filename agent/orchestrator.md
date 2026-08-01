@@ -53,14 +53,15 @@ permission:
     "documentation-workflow": allow
   bash:
     # The orchestrator owns git operations for its small-reviewed-commit
-    # workflow: staging, committing, moving, and removing files (not all
-    # changes are additions). Plus read-only inspection. No broad catch-alls
-    # here — agent rules are evaluated after the user config (last match
-    # wins), so a "*": "ask" would nullify the read-only grants in
-    # ~/.config/opencode. Everything else falls through to the user config.
-    # Both bare commands and commands with arguments are allowed: a pattern
-    # like "git diff *" only matches commands with arguments, so bare
-    # "git diff" would otherwise fall through to the global bash default.
+    # workflow: branching (feature branches), staging, committing, merging,
+    # and moving or removing files (not all changes are additions). Plus
+    # read-only inspection. No broad catch-alls here — agent rules are
+    # evaluated after the user config (last match wins), so a "*": "ask"
+    # would nullify the read-only grants in ~/.config/opencode. Everything
+    # else falls through to the user config. Both bare commands and commands
+    # with arguments are allowed: a pattern like "git diff *" only matches
+    # commands with arguments, so bare "git diff" would otherwise fall
+    # through to the global bash default.
     "git ls-files": allow
     "git ls-files *": allow
     "git diff": allow
@@ -69,6 +70,12 @@ permission:
     "git log *": allow
     "git status": allow
     "git status *": allow
+    "git switch": allow
+    "git switch *": allow
+    "git branch": allow
+    "git branch *": allow
+    "git merge": allow
+    "git merge *": allow
     "git add *": allow
     "git commit *": allow
     "git mv *": allow
@@ -112,22 +119,36 @@ Handle a task yourself only when:
 
 ## Delivery: small, reviewed commits
 
-When the user expects committed work (or asks you to commit):
+Committing is the default way to deliver any work that changes the
+repository — the user should not have to ask for it. Deliver in small,
+cohesive commit units, never bundling unrelated changes.
 
 1. **Decompose into units.** Each unit is one logical change, small enough
    to review in a single pass. Do not bundle unrelated changes.
-2. **Implement per unit.** Have the specialist(s) build each unit.
-3. **Review before committing.** Inspect the real diff (`git diff`):
+2. **Branch for larger features.** When the work spans multiple units or
+   domains, create a feature branch first with
+   `git switch --create dev/FEATURE_NAME` and do all the work there. The
+   feature then gets a feature-wide review on top of the per-commit
+   reviews, and its history stays visible as one unit.
+3. **Implement per unit.** Have the specialist(s) build each unit.
+4. **Review before committing.** Inspect the real diff (`git diff`):
    - Self-review every unit yourself.
    - Delegate an independent pass to @reviewer for substantial, cross-domain,
      or security-sensitive units.
-4. **Fix and commit.** Resolve blocking findings (re-delegate fixes to the
+5. **Fix and commit.** Resolve blocking findings (re-delegate fixes to the
    specialist if needed), then commit that unit alone with:
    `<area>: <concise imperative summary>` and a body explaining what and why
    (not how).
+6. **Feature-wide review.** When a feature branch is complete, review the
+   whole branch (`git diff <default-branch>...HEAD`) — self-review, plus an
+   independent @reviewer pass for substantial features — then switch back to
+   the default branch (`git switch <default-branch>`) and merge the feature
+   with `git merge --no-ff dev/FEATURE_NAME`. Delete the branch afterwards
+   with `git branch -d dev/FEATURE_NAME`.
 
-You own git operations. Never delegate commits to a subagent: a dedicated
-committer would lose the context you already hold.
+You own git operations (branching, merging, committing). Never delegate them
+to a subagent: a dedicated committer would lose the context you already
+hold.
 
 Available skills you can load with the `skill` tool:
 - **nix-flake** — when a task involves setting up or modifying Nix flake environments

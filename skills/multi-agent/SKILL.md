@@ -36,6 +36,11 @@ an edit to the configuration itself, or too small to justify a round-trip.
 ## Review before commit
 
 - The orchestrator inspects `git diff` before committing every unit.
+- Larger features are developed on a `dev/FEATURE_NAME` branch created with
+  `git switch --create`; when the branch is complete, the whole branch gets
+  a feature-wide review (`git diff <default-branch>...HEAD`) on top of the
+  per-commit reviews before the orchestrator switches back to the default
+  branch and merges it with `git merge --no-ff`.
 - Substantial, cross-domain, or security-sensitive changes get an independent
   pass from @reviewer.
 - The reviewer reports findings with severity (BLOCKING / NON-BLOCKING / NIT);
@@ -47,9 +52,11 @@ an edit to the configuration itself, or too small to justify a round-trip.
 
 ## Commits
 
-- The orchestrator owns git operations and never delegates commits to a
-  subagent — a dedicated committer would lose the context the orchestrator
-  already holds.
+- Committing is the default delivery for any change-producing work; the user
+  does not need to ask for it.
+- The orchestrator owns git operations (branching, merging, committing) and
+  never delegates them to a subagent — a dedicated committer would lose the
+  context the orchestrator already holds.
 - Commits are small and unit-scoped: one logical change per commit, no
   unrelated changes bundled.
 - Message: `<area>: <concise imperative summary>` with a body explaining what

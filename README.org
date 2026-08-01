@@ -254,13 +254,18 @@ responsibilities:
    definitions match a data-engineer's SQL schema).
 5. **Review** each unit's diff before committing (self-review via =git diff=,
    with an independent @reviewer pass for substantial or cross-domain changes).
-6. **Commit** small, unit-scoped changes with concise messages.
+6. **Commit** small, unit-scoped changes with concise messages — the default
+   delivery for any change, not something the user must request.
+7. **Branch larger features** on =dev/FEATURE_NAME= (via
+   =git switch --create=), review the whole branch on top of the per-commit
+   reviews, then switch back to the default branch and merge with
+   =git merge --no-ff=.
 
 Delegation is the default: even small tasks go to the specialist that covers
 their domain. The orchestrator only handles tasks directly when they are pure
 questions, edits to this configuration itself, or too small to justify a
-subagent round-trip. Commits always stay with the orchestrator, never
-delegated.
+subagent round-trip. Git operations — branching, committing, merging — always
+stay with the orchestrator, never delegated.
 
 ** Subagents
 
