@@ -24,7 +24,7 @@ This project turns OpenCode into a coordinated team of specialists:
   subtasks to the right subagent, and integrates their outputs.
 - **7 subagents** – domain experts for Rust, Haskell, Python, data
   engineering, reasoning/constraint solving, web development, and documentation.
-- **11 skills** – on-demand workflow guidance loaded by agents when a task
+- **12 skills** – on-demand workflow guidance loaded by agents when a task
   matches the skill's domain.
 - **Nix flake support** – reproducible development environments for every
   language stack (environment definitions via [[https://nixos.wiki/wiki/Flakes][Nix flakes]]).
@@ -76,6 +76,7 @@ The system follows a hub-and-spoke pattern:
           SK9[customize-opencode]
           SK10[multi-agent]
           SK11[documentation-workflow]
+          SK12[devenv]
       end
 
       RS -.->|skill tool| SK1
@@ -89,6 +90,7 @@ The system follows a hub-and-spoke pattern:
       ORC -.->|skill tool| SK9
       ORC -.->|skill tool| SK10
       ORC -.->|skill tool| SK7
+      ORC -.->|skill tool| SK12
 #+end_src
 
 #+RESULTS:
@@ -128,7 +130,7 @@ skills/
   <name>/
     SKILL.md                Domain skill (loaded on demand)
     templates/              Starter files for the domain
-  ...                       (11 skills total, listed below)
+  ...                       (12 skills total, listed below)
 
 scripts/
   validate-config.bash      Sanity-check the configuration
@@ -266,6 +268,7 @@ description. They provide detailed workflows, conventions, and templates.
 | reasoning-workflow       | reasoning-engineer          | Prolog/MiniZinc conventions, solver selection           |
 | shell-workflow           | orchestrator, any agent     | Bash/Fish conventions, argument parsing patterns       |
 | nix-flake                | orchestrator                | Flake structure, commands, best practices              |
+| devenv                   | orchestrator                | devenv.nix/yaml/lock structure, commands, best practices |
 | customize-opencode       | orchestrator                | This project's own structure and conventions           |
 | multi-agent              | orchestrator                | Orchestration patterns and task decomposition guide    |
 | documentation-workflow   | doc-dev                     | Doc templates, style guide, conventions for README/API/changelog |
@@ -389,7 +392,7 @@ This checks:
 - Offer agents that excel at multi-agent orchestration of tasks.
 - Offer global skills helpful for single and multi-agent tasks.
 - Use selected technologies:
-  - Nix flakes for environment definition.
+  - Nix flakes and devenv for environment definition.
   - Rust for most tasks (high level, great performance, good libraries
     and type system).
   - Haskell (excellent type system, good performance).

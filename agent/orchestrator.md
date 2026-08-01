@@ -64,6 +64,7 @@ For simple or cross-domain tasks, handle them yourself. For deep domain work, al
 
 Available skills you can load with the `skill` tool:
 - **nix-flake** — when a task involves setting up or modifying Nix flake environments
+- **devenv** — when a task involves setting up or modifying devenv (devenv.sh) environments
 - **customize-opencode** — when editing this project's own configuration (agents, skills, opencode.jsonc)
 - **multi-agent** — when decomposing complex cross-domain requests into subtasks
 - **shell-workflow** — when writing or reviewing shell scripts (bash/fish)
