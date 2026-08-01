@@ -14,6 +14,18 @@ only open work.
 
 * Items
 
+** [#B] Orchestrator: =git branch -d *= also auto-allows =git branch -d --force=
+:PROPERTIES:
+:FILE: agent/orchestrator.md
+:END:
+
+The narrowed =git branch -d *= allow still matches the long-option force
+delete =git branch -d --force <name>= (equivalent to =-D=), since OpenCode
+matches bash patterns on command prefixes. The workflow only uses plain
+=git branch -d=, so this is unlikely in practice; a dedicated deny
+(=git branch -d --force *=) could close it but gets into whack-a-mole.
+(@reviewer, NON-BLOCKING, on 932e5f3.)
+
 ** [#B] Reviewer: pipe-based bash write bypass
 :PROPERTIES:
 :FILE: agent/reviewer.md

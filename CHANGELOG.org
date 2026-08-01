@@ -30,6 +30,9 @@ tracks only open work).
 
 ** Changed
 
+- Orchestrator: narrow =git branch *= to =git branch -d *= in the bash
+  allow list so force deletes (=git branch -D=) prompt instead of
+  auto-allowing (932e5f3)
 - Skills: fix permission catch-all ordering in web-workflow and
   customize-opencode (1ebd65b)
 - Reviewer: enforce read-only bash with a catch-all deny (769f27e)
