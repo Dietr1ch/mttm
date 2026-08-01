@@ -6,10 +6,11 @@ permission:
   grep: allow
   question: allow
   read:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
     "**/*.org": allow
     "**/*.md": allow
     "**/*.jsonc": allow
-    "*": ask
   webfetch: ask
   websearch: ask
 ---

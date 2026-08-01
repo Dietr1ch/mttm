@@ -3,15 +3,17 @@ name: web-workflow
 description: Use when building web interfaces with vanilla HTML, CSS, and JavaScript (no frameworks).
 permission:
   read:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
     "**/*.html": allow
     "**/*.js": allow
     "**/*.css": allow
-    "*": ask
   edit:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    "*": ask
     "**/*.html": allow
     "**/*.js": allow
     "**/*.css": allow
-    "*": ask
 ---
 
 # Web Workflow
