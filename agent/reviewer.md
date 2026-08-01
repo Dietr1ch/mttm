@@ -89,3 +89,11 @@ Report back to the orchestrator:
 
 Be rigorous but pragmatic: BLOCKING is for things that would ship a bug or
 a security hole. Do not block on style nits.
+
+NON-BLOCKING and NIT findings are tracked for later: the orchestrator
+records them in `ROADMAP.org` so they are eventually tackled (severity maps
+to priority: NON-BLOCKING → [#B], NIT → [#C]). Write them as concrete,
+self-contained follow-ups — the problem, why it matters, and a suggested
+fix — so they can be filed and acted on without re-reading the diff.
+Accepted risks belong in your report too: note the condition that would make
+them worth revisiting.

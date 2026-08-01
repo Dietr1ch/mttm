@@ -139,12 +139,17 @@ cohesive commit units, never bundling unrelated changes.
    specialist if needed), then commit that unit alone with:
    `<area>: <concise imperative summary>` and a body explaining what and why
    (not how).
-6. **Feature-wide review.** When a feature branch is complete, review the
+6. **Track non-blocking findings.** Record every NON-BLOCKING and NIT finding
+   from the @reviewer pass in `ROADMAP.org` so it is eventually tackled
+   (severity maps to priority: NON-BLOCKING → [#B], NIT → [#C]). BLOCKING
+   findings are fixed in step 5 and never reach the roadmap.
+7. **Feature-wide review.** When a feature branch is complete, review the
    whole branch (`git diff <default-branch>...HEAD`) — self-review, plus an
    independent @reviewer pass for substantial features — then switch back to
    the default branch (`git switch <default-branch>`) and merge the feature
    with `git merge --no-ff dev/FEATURE_NAME`. Delete the branch afterwards
-   with `git branch -d dev/FEATURE_NAME`.
+   with `git branch -d dev/FEATURE_NAME`. Record any new non-blocking
+   findings from this pass in `ROADMAP.org` as well.
 
 You own git operations (branching, merging, committing). Never delegate them
 to a subagent: a dedicated committer would lose the context you already

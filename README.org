@@ -260,6 +260,8 @@ responsibilities:
    =git switch --create=), review the whole branch on top of the per-commit
    reviews, then switch back to the default branch and merge with
    =git merge --no-ff=.
+8. **Track non-blocking reviewer findings** in =ROADMAP.org= (NON-BLOCKING →
+   [#B], NIT → [#C]) so they are eventually tackled.
 
 Delegation is the default: even small tasks go to the specialist that covers
 their domain. The orchestrator only handles tasks directly when they are pure

@@ -43,12 +43,15 @@ an edit to the configuration itself, or too small to justify a round-trip.
   branch and merges it with `git merge --no-ff`.
 - Substantial, cross-domain, or security-sensitive changes get an independent
   pass from @reviewer.
+- Every NON-BLOCKING and NIT finding from @reviewer is recorded in
+  `ROADMAP.org` so it is eventually tackled (severity maps to priority:
+  NON-BLOCKING → [#B], NIT → [#C]). BLOCKING findings are fixed before the
+  commit — possibly by re-delegating to the specialist — and never reach the
+  roadmap.
 - The reviewer reports findings with severity (BLOCKING / NON-BLOCKING / NIT);
   it never edits and never commits.
 - For security-sensitive changes, the reviewer loads the **security-review**
   skill and audits against its checklist.
-- Blocking findings are fixed (possibly by re-delegating to the specialist)
-  before the commit.
 
 ## Commits
 
