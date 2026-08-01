@@ -45,18 +45,50 @@ reading =opencode.jsonc= prompts.
 
 Fix: add ="*.jsonc": allow= to the =read= block.
 
-** TODO [#C] Verify the secret-read deny merge behavior live
+** DONE [#C] Verify the secret-read deny merge behavior live
 :PROPERTIES:
 :FILE: agent/orchestrator.md
 :END:
 
-The agent-level ="*.env"=/="*.gpg"= denies were added on the assumption
-that agent =read= rules override the global config with last-match-wins.
-The behavior is documented but has not been exercised.
+Verified live in a real session (2026-08-01): reading a =*.env= file as
+the orchestrator, rust-dev, and web-dev is hard-denied ("Do not read .env
+files") rather than prompting. The agent-level re-denial works.
 
-Fix: in a real session, attempt to read a =.env= file as each affected
-agent (orchestrator, rust-dev, web-dev) and confirm it is denied rather
-than prompting.
+Two side findings surfaced while verifying:
+
+- A =.env.example= read is also denied, despite the
+  ="*.env.example": allow= rule that follows the ="*.env.*": deny=.
+  The config comments claim "last-match-wins", but matching behaves as
+  deny-wins: the =.env.*= deny shadows the =.env.example= allow, making
+  the allow rule dead code. Harmless (denying =*.env.example= is safer),
+  but the comments in =agent/*.md= and the global config describe
+  behaviour that does not hold.
+- A text file named =*.gpg= was readable, so the ="*.gpg": deny= did not
+  fire in the probe. Real =.gpg= files are binary and the Read tool
+  refuses binary files anyway, so practical exposure is low, but the
+  rule's effectiveness is unconfirmed.
+
+** TODO [#C] Confirm permission matching semantics (deny-wins vs last-match-wins)
+:PROPERTIES:
+:FILE: docs/ROADMAP.org
+:END:
+
+The live verification of the secret-read denies found that permission
+matching does not behave as the config comments document. The comments in
+=agent/orchestrator.md=, =agent/rust-dev.md=, =agent/web-dev.md=, and the
+global =~/.config/opencode/opencode.jsonc= say rules are evaluated
+"last-match-wins", but:
+
+- =.env.example= (allow, listed after the =.env.*= deny) is denied,
+  implying deny-wins or deny-first evaluation.
+- A text file named =*.gpg= was readable, so the =*.gpg= deny did not
+  fire in that probe.
+
+If the engine is deny-wins, the catch-all-first convention is still a
+safe convention to keep, but the =*.env.example= and =*.gpg= allow/deny
+pairs should be re-audited for what they actually do. Confirm against
+OpenCode's permission documentation (or a controlled experiment), then
+fix the misleading comments and prune dead rules.
 
 ** TODO [#C] Strengthen scripts/validate-config.bash
 :PROPERTIES:
