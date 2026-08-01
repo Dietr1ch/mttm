@@ -29,9 +29,14 @@ permission:
     # read-only allows below don't explicitly cover (last-match-wins).
     # Both bare commands and commands with arguments are allowed explicitly,
     # since a pattern like "git diff *" only matches commands with args.
+    # Accepted residual risk: OpenCode matches bash patterns on command
+    # prefixes, so a pipe such as "git diff | git apply" can still write
+    # despite the deny catch-all. The same behaviour exists in the global
+    # config; revisit if OpenCode gains argument- or pipe-aware matching.
     "*": deny
     "git diff": allow
     "git diff *": allow
+    "git show": allow
     "git show *": allow
     "git log": allow
     "git log *": allow
