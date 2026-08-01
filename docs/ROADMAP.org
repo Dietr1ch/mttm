@@ -105,17 +105,26 @@ Fix: validate permission keys against the known set (=read=, =edit=,
 =grep=), check that ="*"= catch-alls precede specific rules, and verify
 agent models against an expected mapping.
 
-** TODO [#C] Investigate reviewer subagent empty responses
+** DONE [#C] Investigate reviewer subagent empty responses
 :PROPERTIES:
 :FILE: agent/reviewer.md
 :END:
 
-During the review session the reviewer (=deepseek-v4-pro-thinking=)
-returned empty task output twice in a row, forcing a manual fallback.
-Possibly a provider or streaming issue with the thinking model.
+Root cause found and fixed. The empty results were not a streaming
+quirk: every request for =deepseek-v4-pro-thinking= through the
+Anthropic-compatible endpoint fails with =AI_APICallError: Bad Request=
+(HTTP 400) — verified in =~/.local/share/opencode/log/opencode.log=
+(4/4 attempts across two sessions, 2026-08-01). The model is the only
+one registered with =thinking: enabled= options and a 262144-token
+output limit, one of which the DeepSeek API rejects.
 
-Fix: reproduce, check provider limits and streaming behaviour, and
-consider a fallback model for the reviewer if it persists.
+Fix: reviewer and reasoning-engineer (same model, equally broken, just
+unexercised) switched to =deepseek/deepseek-v4-pro= as a fallback.
+README documents the switch and the condition for re-enabling
+pro-thinking.
+
+Note: agent definitions are cached for the lifetime of an OpenCode
+session, so the fallback only takes effect in a new session.
 
 ** TODO [#C] Reviewer: document the pipe-based bash write bypass
 :PROPERTIES:

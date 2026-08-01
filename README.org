@@ -52,10 +52,10 @@ The system follows a hub-and-spoke pattern:
           HS[haskell-dev<br/>deepseek-v4-flash]
           PY[python-dev<br/>deepseek-v4-flash]
           DE[data-engineer<br/>deepseek-v4-flash]
-          RE[reasoning-engineer<br/>deepseek-v4-pro-thinking]
+          RE[reasoning-engineer<br/>deepseek-v4-pro]
           WB[web-dev<br/>deepseek-v4-flash]
           DD[doc-dev<br/>deepseek-v4-flash]
-          RV[reviewer<br/>deepseek-v4-pro-thinking]
+          RV[reviewer<br/>deepseek-v4-pro]
       end
 
       ORC -->|task tool| RS
@@ -190,8 +190,8 @@ and latency:
 | Documentation subagent   | =deepseek/deepseek-v4-flash=   | Strong language understanding for clear, structured docs      |
 | Haskell subagent         | =deepseek/deepseek-v4-flash=   | Haskell's type system benefits from stronger reasoning        |
 | Data Engineering         | =deepseek/deepseek-v4-flash=   | Schema design and query optimization need deeper analysis     |
-| Reasoning/Constraint     | =deepseek/deepseek-v4-pro-thinking=     | Prolog/MiniZinc require the strongest reasoning model         |
-| Reviewer                 | =deepseek/deepseek-v4-pro-thinking=     | Independent diffs need the strongest reasoning model          |
+| Reasoning/Constraint     | =deepseek/deepseek-v4-pro=       | Prolog/MiniZinc need strong reasoning; pro-thinking is currently unavailable |
+| Reviewer                 | =deepseek/deepseek-v4-pro=       | Independent diffs need strong reasoning; pro-thinking is currently unavailable |
 
 ** When to use which model
 
@@ -200,10 +200,18 @@ and latency:
   every subagent whose domain benefits from strong reasoning without the
   cost of a thinking model (Rust, Haskell, Python, web, data engineering,
   documentation).
-- **=deepseek/deepseek-v4-pro-thinking=** — heavy reasoning. Used by the
+- **=deepseek/deepseek-v4-pro=** — heavy reasoning. Used by the
   reasoning-engineer subagent for Prolog, MiniZinc, SAT/SMT, and
-  constraint satisfaction where correctness depends on precise logical
-  inference, and by the reviewer to audit diffs thoroughly before commits.
+  constraint satisfaction, and by the reviewer to audit diffs thoroughly
+  before commits.
+- **=deepseek/deepseek-v4-pro-thinking=** — *not currently usable*: the
+  DeepSeek API rejects every request for this model id with HTTP 400
+  (Bad Request) when called through the Anthropic-compatible endpoint
+  (verified 2026-08-01 in OpenCode's log: =AI_APICallError: Bad
+  Request= on every subagent stream). Reasoning-engineer and reviewer
+  were switched to =deepseek-v4-pro= as a fallback. Re-enable when the
+  provider-side issue is resolved (likely the =thinking= options or the
+  262144-token output limit on this model's registration).
 
 ** Overriding models
 
@@ -228,10 +236,10 @@ To use a different model, edit =opencode.jsonc=:
 | haskell-dev       | subagent | deepseek/deepseek-v4-flash        | Haskell/Cabal/Stack code, pure-functional design            |
 | python-dev        | subagent | deepseek/deepseek-v4-flash        | Python scripts, libraries, data science, automation         |
 | data-engineer     | subagent | deepseek/deepseek-v4-flash        | SQL schemas, DuckDB, Postgres, ETL pipelines                |
-| reasoning-engineer| subagent | deepseek/deepseek-v4-pro-thinking | Prolog, MiniZinc, SAT/SMT, constraint solving               |
+| reasoning-engineer| subagent | deepseek/deepseek-v4-pro         | Prolog, MiniZinc, SAT/SMT, constraint solving               |
 | web-dev           | subagent | deepseek/deepseek-v4-flash        | HTML, vanilla CSS/JS, no frameworks                         |
 | doc-dev           | subagent | deepseek/deepseek-v4-flash        | READMEs, API docs, tutorials, changelogs, technical writing |
-| reviewer          | subagent | deepseek/deepseek-v4-pro-thinking | Pre-commit diff audit (substantial/cross-domain/security)   |
+| reviewer          | subagent | deepseek/deepseek-v4-pro         | Pre-commit diff audit (substantial/cross-domain/security)   |
 
 ** Orchestrator
 
