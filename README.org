@@ -22,8 +22,9 @@ This project turns OpenCode into a coordinated team of specialists:
 
 - **Orchestrator** – understands the full request, decomposes it, delegates
   subtasks to the right subagent, and integrates their outputs.
-- **7 subagents** – domain experts for Rust, Haskell, Python, data
-  engineering, reasoning/constraint solving, web development, and documentation.
+- **8 subagents** – domain experts for Rust, Haskell, Python, data
+  engineering, reasoning/constraint solving, web development, documentation,
+  and code review.
 - **12 skills** – on-demand workflow guidance loaded by agents when a task
   matches the skill's domain.
 - **Nix flake support** – reproducible development environments for every
@@ -54,6 +55,7 @@ The system follows a hub-and-spoke pattern:
           RE[reasoning-engineer<br/>deepseek-v4-pro-thinking]
           WB[web-dev<br/>qwen3-coder]
           DD[doc-dev<br/>deepseek-v4-flash]
+          RV[reviewer<br/>deepseek-v4-pro-thinking]
       end
 
       ORC -->|task tool| RS
@@ -63,6 +65,7 @@ The system follows a hub-and-spoke pattern:
       ORC -->|task tool| RE
       ORC -->|task tool| WB
       ORC -->|task tool| DD
+      ORC -->|task tool| RV
 
       subgraph Skills [On-Demand Skills]
           SK1[rust-workflow]
@@ -125,6 +128,7 @@ agent/
   data-engineer.md          Postgres/DuckDB specialist
   reasoning-engineer.md     Prolog/MiniZinc specialist
   doc-dev.md                READMEs, API docs, tutorials, technical writing
+  reviewer.md               Pre-commit diff reviewer (read-only)
 
 skills/
   <name>/
@@ -185,6 +189,7 @@ and latency:
 | Haskell subagent         | =deepseek/deepseek-v4-flash=   | Haskell's type system benefits from stronger reasoning        |
 | Data Engineering         | =deepseek/deepseek-v4-flash=   | Schema design and query optimization need deeper analysis     |
 | Reasoning/Constraint     | =deepseek/deepseek-v4-pro-thinking=     | Prolog/MiniZinc require the strongest reasoning model         |
+| Reviewer                 | =deepseek/deepseek-v4-pro-thinking=     | Independent diffs need the strongest reasoning model          |
 
 ** When to use which model
 
@@ -192,10 +197,10 @@ and latency:
   reasoning depth and response speed. Used by the orchestrator (needs to
   plan and integrate) and by subagents whose domains benefit from deeper
   reasoning (Haskell types, SQL optimization).
-- **=deepseek/deepseek-v4-pro-thinking=** — heavy reasoning. Used only by the
+- **=deepseek/deepseek-v4-pro-thinking=** — heavy reasoning. Used by the
   reasoning-engineer subagent for Prolog, MiniZinc, SAT/SMT, and
   constraint satisfaction where correctness depends on precise logical
-  inference.
+  inference, and by the reviewer to audit diffs thoroughly before commits.
 - **=ollama/qwen3-coder=** — small, fast local model. Used for subagents
   with narrow, well-defined tasks (Rust, Python, web). The orchestrator
   provides enough context that the subagent only needs to generate
@@ -227,6 +232,7 @@ To use a different model, edit =opencode.jsonc=:
 | reasoning-enginee | subagent | deepseek/deepseek-v4-pro-thinking | Prolog, MiniZinc, SAT/SMT, constraint solving               |
 | web-dev           | subagent | ollama/qwen3-coder:30b            | HTML, vanilla CSS/JS, no frameworks                         |
 | doc-dev           | subagent | deepseek/deepseek-v4-flash        | READMEs, API docs, tutorials, changelogs, technical writing |
+| reviewer          | subagent | deepseek/deepseek-v4-pro-thinking | Pre-commit diff audit (substantial/cross-domain/security)   |
 
 ** Orchestrator
 
@@ -239,9 +245,15 @@ responsibilities:
 4. **Integrate** the results into a coherent response, resolving any
    cross-domain conflicts (e.g., ensuring a Rust subagent's struct
    definitions match a data-engineer's SQL schema).
+5. **Review** each unit's diff before committing (self-review via =git diff=,
+   with an independent @reviewer pass for substantial or cross-domain changes).
+6. **Commit** small, unit-scoped changes with concise messages.
 
-For simple or cross-domain tasks, the orchestrator may handle them
-directly without delegation.
+Delegation is the default: even small tasks go to the specialist that covers
+their domain. The orchestrator only handles tasks directly when they are pure
+questions, edits to this configuration itself, or too small to justify a
+subagent round-trip. Commits always stay with the orchestrator, never
+delegated.
 
 ** Subagents
 
