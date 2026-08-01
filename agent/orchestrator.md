@@ -35,6 +35,13 @@ permission:
     "Justfile": allow
     "*/Justfile": allow
     ".gitignore": allow
+    # Re-deny secrets: agent rules override the global config's deny, so the
+    # "*": ask catch-all above would downgrade them to a prompt. Keep the
+    # global semantics: allow .env.example, deny everything else secret.
+    "*.env": deny
+    "*.env.*": deny
+    "*.env.example": allow
+    "*.gpg": deny
   skill:
     "*": ask
     "multi-agent": allow
