@@ -44,9 +44,12 @@ permission:
     "*.gpg": deny
   skill:
     "*": ask
-    "multi-agent": allow
-    "documentation-workflow": allow
+    "nix-flake": allow
+    "devenv": allow
     "customize-opencode": allow
+    "multi-agent": allow
+    "shell-workflow": allow
+    "documentation-workflow": allow
   bash:
     # The orchestrator owns git operations for its small-reviewed-commit
     # workflow: staging, committing, moving, and removing files (not all
