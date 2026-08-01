@@ -5,7 +5,7 @@ Follow-up items for the mttm configuration, tracked until resolved.
 Priorities use org-mode's default scale, #A to #C: [#A] major, [#B]
 moderate, [#C] minor.
 
-Resolved items are archived to =../CHANGELOG.org= (org-mode archive
+Resolved items are archived to =CHANGELOG.org= (org-mode archive
 pattern); this file tracks only open work. The configuration review
 (2026-08-01) raised no remaining open items.
 

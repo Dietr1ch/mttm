@@ -4,8 +4,8 @@
 All notable changes to the mttm configuration, newest first. Sections
 follow the [[https://keepachangelog.com][keepachangelog]] categories; each
 entry cites the commit that made the change. Resolved roadmap items are
-archived here from =docs/ROADMAP.org= (org-mode archive pattern: the
-roadmap tracks only open work).
+archived here from =ROADMAP.org= (org-mode archive pattern: the roadmap
+tracks only open work).
 
 * 2026-08-01
 
