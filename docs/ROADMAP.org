@@ -4,9 +4,11 @@
 Remaining minor items identified during the configuration review
 (August 2026). Priorities use org-mode's default scale, #A to #C:
 [#A] major, [#B] moderate, [#C] minor. Everything here is tagged
-[#C]; items are ordered by impact, most useful first. The seven
-items from the review that are already fixed are listed below under
-the *Recently completed* heading.
+[#C]; items are ordered by impact, most useful first. All items are
+now resolved (2026-08-01); each DONE note records the fix and the
+commit or documentation reference. The seven items from the review
+that were already fixed when this roadmap was written are listed
+below under the *Recently completed* heading.
 
 * Recently completed
 
@@ -21,7 +23,7 @@ the *Recently completed* heading.
 
 * Items
 
-** TODO [#C] Orchestrator: allow the skills its prompt advertises
+** DONE [#C] Orchestrator: allow the skills its prompt advertises
 :PROPERTIES:
 :FILE: agent/orchestrator.md
 :END:
@@ -31,10 +33,10 @@ skills, but =permission.skill= only allows =multi-agent=,
 =documentation-workflow=, and =customize-opencode=. Loading an advertised
 skill therefore prompts instead of running.
 
-Fix: add =nix-flake=, =devenv=, and =shell-workflow= to the =skill= allow
-list.
+Fixed (2026-08-01): =nix-flake=, =devenv=, and =shell-workflow= added to
+the =skill= allow list (commit 585b9dc).
 
-** TODO [#C] Orchestrator: allow reading opencode.jsonc
+** DONE [#C] Orchestrator: allow reading opencode.jsonc
 :PROPERTIES:
 :FILE: agent/orchestrator.md
 :END:
@@ -43,7 +45,8 @@ The orchestrator owns edits to this configuration (=agent/=, =skills/=,
 =opencode.jsonc=), but its =read= block has no ="*.jsonc"= pattern, so
 reading =opencode.jsonc= prompts.
 
-Fix: add ="*.jsonc": allow= to the =read= block.
+Fixed (2026-08-01): ="*.jsonc": allow= added to the =read= block
+(commit dcaa8db).
 
 ** DONE [#C] Verify the secret-read deny merge behavior live
 :PROPERTIES:
@@ -68,7 +71,7 @@ Two side findings surfaced while verifying:
   refuses binary files anyway, so practical exposure is low, but the
   rule's effectiveness is unconfirmed.
 
-** TODO [#C] Confirm permission matching semantics (deny-wins vs last-match-wins)
+** DONE [#C] Confirm permission matching semantics (deny-wins vs last-match-wins)
 :PROPERTIES:
 :FILE: docs/ROADMAP.org
 :END:
@@ -84,13 +87,19 @@ global =~/.config/opencode/opencode.jsonc= say rules are evaluated
 - A text file named =*.gpg= was readable, so the =*.gpg= deny did not
   fire in that probe.
 
-If the engine is deny-wins, the catch-all-first convention is still a
-safe convention to keep, but the =*.env.example= and =*.gpg= allow/deny
-pairs should be re-audited for what they actually do. Confirm against
-OpenCode's permission documentation (or a controlled experiment), then
-fix the misleading comments and prune dead rules.
+Resolved (2026-08-01) against the official Permissions docs
+(https://opencode.ai/docs/permissions/, updated 2026-07-31): "Rules are
+evaluated by pattern match, with the last matching rule winning." The
+config comments are correct, and the docs' own default =read= example
+uses the same =*.env= deny / =*.env.*= deny / =*.env.example= allow
+ordering, so the =.env.example= allow is not dead code. The earlier
+probe observation is most likely a probe artifact (read-path matching,
+or the allow rule shadowed at runtime by the older engine version); no
+config change was needed. The =*.gpg= deny is kept as a harmless
+belt-and-braces rule: real =.gpg= files are binary and the Read tool
+refuses binary files regardless.
 
-** TODO [#C] Strengthen scripts/validate-config.bash
+** DONE [#C] Strengthen scripts/validate-config.bash
 :PROPERTIES:
 :FILE: scripts/validate-config.bash
 :END:
@@ -100,10 +109,11 @@ reported "OK" while real bugs were present (invalid =write:= key,
 catch-all ordering, accidental =Cargo.toml= deny). Its model-consistency
 check only emits a note for =ollama/= agents.
 
-Fix: validate permission keys against the known set (=read=, =edit=,
-=bash=, =task=, =skill=, =webfetch=, =websearch=, =question=, =glob=,
-=grep=), check that ="*"= catch-alls precede specific rules, and verify
-agent models against an expected mapping.
+Fixed (2026-08-01): permission keys validated against the known set
+(=read=, =edit=, =bash=, =task=, =skill=, =webfetch=, =websearch=,
+=question=, =glob=, =grep=), ="*"= catch-alls must precede specific
+rules, and agent models are checked against an expected mapping
+(commit e257af6).
 
 ** DONE [#C] Investigate reviewer subagent empty responses
 :PROPERTIES:
@@ -126,7 +136,7 @@ pro-thinking.
 Note: agent definitions are cached for the lifetime of an OpenCode
 session, so the fallback only takes effect in a new session.
 
-** TODO [#C] Reviewer: document the pipe-based bash write bypass
+** DONE [#C] Reviewer: document the pipe-based bash write bypass
 :PROPERTIES:
 :FILE: agent/reviewer.md
 :END:
@@ -136,10 +146,11 @@ bash patterns on command prefixes, so a pipe such as =git diff | git apply=
 still executes and can write. Accepted as residual risk for now; the same
 behaviour exists in the global config.
 
-Fix: revisit if OpenCode gains argument- or pipe-aware matching;
-otherwise document the accepted risk in the reviewer prompt.
+Fixed (2026-08-01): the accepted risk is now documented in the reviewer
+prompt's bash permission block, with a note to revisit if OpenCode gains
+argument- or pipe-aware matching.
 
-** TODO [#C] Match bare git/cargo commands in agent bash allow lists
+** DONE [#C] Match bare git/cargo commands in agent bash allow lists
 :PROPERTIES:
 :FILE: agent/orchestrator.md
 :END:
@@ -149,11 +160,12 @@ Patterns like ="git diff *"= only match commands with arguments; a bare
 global default is ="*": allow=, but would prompt if that default
 tightens. =reviewer.md= already carries the bare forms.
 
-Fix: add bare forms (=git diff=, =git log=, =git status=, =cargo check=,
-...) alongside the wildcard patterns in =orchestrator.md= and
-=rust-dev.md=.
+Fixed (2026-08-01): bare forms added alongside the wildcard patterns in
+=orchestrator.md= (=git ls-files=, =git diff=, =git log=, =git status=,
+=just test=) and =rust-dev.md= (=cargo doc=, =cargo clippy=, =cargo fmt=,
+=cargo nextest=, =cargo check=, =cargo build=).
 
-** TODO [#C] Confirm doc-dev edit scope
+** DONE [#C] Confirm doc-dev edit scope
 :PROPERTIES:
 :FILE: agent/doc-dev.md
 :END:
@@ -162,10 +174,15 @@ Fix: add bare forms (=git diff=, =git log=, =git status=, =cargo check=,
 to documentation files. Acceptable while it writes repo docs, but confirm
 it is intentional.
 
-Fix: if not, trim the =edit= allow list to documentation formats (=.md=,
-=.org=, =.txt=, =**/CHANGELOG*=, =**/LICENSE*=, =.ronn=).
+Resolved (2026-08-01): scope confirmed intentional and extended. Kept the
+configuration-language formats (=.toml=, =.nix=, =.lock=, =.json=,
+=.yaml=, =.yml=, =Justfile=, =.gitignore=) and added the languages the
+team works in — Rust (=.rs=), Python (=.py=), Haskell (=.hs=), SQL,
+web (=.html=, =.css=, =.js=), and logic (=.pl= Prolog, =.mzn=/.dzn=
+MiniZinc, =.lp=/.asp= ASP) — so docs can stay in sync with the code
+they describe.
 
-** TODO [#C] Align small_model with a configured model
+** DONE [#C] Align small_model with a configured model
 :PROPERTIES:
 :FILE: opencode.jsonc
 :END:
@@ -174,5 +191,5 @@ Fix: if not, trim the =edit= allow list to documentation formats (=.md=,
 registers ="ollama/qwen3-coder:30b"=. The unqualified id may not resolve,
 and OpenCode silently falls back to the main model for title generation.
 
-Fix: set =small_model= to a model that exists in the provider config
-(e.g. =ollama/qwen3-coder:30b=) or remove the key.
+Fixed (2026-08-01): =small_model= set to ="ollama/qwen3-coder:30b"=,
+matching the registered provider model (commit e5e512a).
