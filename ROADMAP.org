@@ -14,16 +14,6 @@ only open work.
 
 * Items
 
-** [#B] Orchestrator: =git branch *= also permits =git branch -D=
-:PROPERTIES:
-:FILE: agent/orchestrator.md
-:END:
-
-The =git branch *= allow pattern also covers =git branch -D= (force
-delete), broader than the =git branch -d= the feature workflow uses.
-Inherent to OpenCode's prefix-based bash matching; revisit if OpenCode
-gains argument-aware matching. (@reviewer, NON-BLOCKING, on a1d3f95.)
-
 ** [#B] Reviewer: pipe-based bash write bypass
 :PROPERTIES:
 :FILE: agent/reviewer.md

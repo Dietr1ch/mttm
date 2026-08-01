@@ -62,6 +62,14 @@ permission:
     # with arguments are allowed: a pattern like "git diff *" only matches
     # commands with arguments, so bare "git diff" would otherwise fall
     # through to the global bash default.
+    # Branch deletes are narrowed to the safe form the workflow uses
+    # ("git branch -d <name>"); a broad "git branch *" would also
+    # auto-allow the force delete "git branch -D". Other branch
+    # subcommands fall through to the user config and prompt. Residual
+    # risk: patterns match on the command prefix, so a force delete chained
+    # after an allowed command (e.g. "git branch -d x && git branch -D y")
+    # still bypasses the allow list — accepted risk, same as the
+    # reviewer's; revisit if OpenCode gains argument-aware matching.
     "git ls-files": allow
     "git ls-files *": allow
     "git diff": allow
@@ -73,7 +81,7 @@ permission:
     "git switch": allow
     "git switch *": allow
     "git branch": allow
-    "git branch *": allow
+    "git branch -d *": allow
     "git merge": allow
     "git merge *": allow
     "git add *": allow
