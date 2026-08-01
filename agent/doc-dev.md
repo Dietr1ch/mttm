@@ -7,13 +7,32 @@ permission:
     "documentation-workflow": allow
   edit:
     # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
+    # Documentation formats, the languages this team works in (Rust, Python,
+    # Haskell, SQL, web, logic), and common configuration formats — so docs
+    # stay in sync with the code they describe.
     "*": ask
+    # Documentation
     "*.md": allow
     "*.org": allow
     "*.txt": allow
     "**/CHANGELOG*": allow
     "**/LICENSE*": allow
     "*.ronn": allow
+    # Code with comments (docs often annotate these)
+    "*.rs": allow
+    "*.py": allow
+    "*.hs": allow
+    "*.sql": allow
+    "*.html": allow
+    "*.css": allow
+    "*.js": allow
+    # Logic (Prolog, ASP, MiniZinc)
+    "*.pl": allow
+    "*.mzn": allow
+    "*.dzn": allow
+    "*.lp": allow
+    "*.asp": allow
+    # Configuration formats
     "*.json": allow
     "*.yaml": allow
     "*.yml": allow
