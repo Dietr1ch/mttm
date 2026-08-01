@@ -7,7 +7,9 @@ permission:
     "devenv.nix": allow
     "devenv.yaml": allow
     "devenv.lock": allow
-  write:
+  # `edit` is the permission key covering edit/write/patch; there is no
+  # separate `write` permission.
+  edit:
     "*.nix": allow
   bash:
     "treefmt *": allow
