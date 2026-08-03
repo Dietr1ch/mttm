@@ -122,7 +122,7 @@ permission:
     "git commit *": allow
     "git mv *": allow
     "git rm *": allow
-    # git - Workspace
+    # git - Workspace (read-only)
     "git -C * ls-files": allow
     "git -C * *ls-files *": allow
     "git -C * *diff": allow
@@ -131,16 +131,6 @@ permission:
     "git -C * *log *": allow
     "git -C * *status": allow
     "git -C * *status *": allow
-    "git -C * *switch": allow
-    "git -C * *switch *": allow
-    "git -C * *branch": allow
-    "git -C * *branch -d *": allow
-    "git -C * *merge": allow
-    "git -C * *merge *": allow
-    "git -C * *add *": allow
-    "git -C * *commit *": allow
-    "git -C * *mv *": allow
-    "git -C * *rm *": allow
   webfetch: ask
   websearch: ask
 ---
