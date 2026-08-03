@@ -11,7 +11,7 @@ permission:
   read:
     # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
-    "~/.local/share/cargo/registry/**": allow
+    "~/.cargo/registry/**": allow
     "*.rs": allow
     "*.org": allow
     "*.md": allow
