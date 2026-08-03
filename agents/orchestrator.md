@@ -52,6 +52,40 @@ permission:
     "shell-workflow": allow
     "documentation-workflow": allow
   bash:
+    # Unix
+    # ====
+    "echo *": allow
+    "cat *": allow
+    "head *": allow
+    "tail *": allow
+    "sort *": allow
+    "uniq *": allow
+    "grep *": allow
+    "awk *": allow
+    "gawk *": allow
+    "perl *": allow
+    "find *": allow
+    "rg *": allow
+    "ls *": allow
+    "mkdir *": allow
+    "timeout *": allow
+    "sleep *": allow
+    "nohup *": allow
+    # Verification
+    # ============
+    # Format
+    "treefmt": allow
+    "cargo fmt *": allow
+    "cargo clippy *": allow
+    # Build
+    "cargo build *": allow
+    # Tests
+    "just test": allow
+    "just test *": allow
+    # Execution
+    "pg_isready *": allow
+    # Git
+    # ===
     # The orchestrator owns git operations for its small-reviewed-commit
     # workflow: branching (feature branches), staging, committing, merging,
     # and moving or removing files (not all changes are additions). Plus
@@ -88,8 +122,25 @@ permission:
     "git commit *": allow
     "git mv *": allow
     "git rm *": allow
-    "just test": allow
-    "just test *": allow
+    # git - Workspace
+    "git -C * ls-files": allow
+    "git -C * *ls-files *": allow
+    "git -C * *diff": allow
+    "git -C * *diff *": allow
+    "git -C * *log": allow
+    "git -C * *log *": allow
+    "git -C * *status": allow
+    "git -C * *status *": allow
+    "git -C * *switch": allow
+    "git -C * *switch *": allow
+    "git -C * *branch": allow
+    "git -C * *branch -d *": allow
+    "git -C * *merge": allow
+    "git -C * *merge *": allow
+    "git -C * *add *": allow
+    "git -C * *commit *": allow
+    "git -C * *mv *": allow
+    "git -C * *rm *": allow
   webfetch: ask
   websearch: ask
 ---
