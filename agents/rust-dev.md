@@ -13,9 +13,9 @@ permission:
     "*": ask
     "~/.cargo/registry/**": allow
     "*.rs": allow
+    "*.toml": allow
     "*.org": allow
     "*.md": allow
-    "*.toml": allow
     "*.nix": allow
     "*.json": allow
     "*.yaml": allow
@@ -32,10 +32,12 @@ permission:
     "*.env.example": allow
     "*.gpg": deny
   edit:
+    # Catch-all FIRST, then allows (rules are evaluated last-match-wins).
     "*": ask
     "*.rs": allow
-    "*.md": allow
+    "*.toml": allow
     "*.org": allow
+    "*.md": allow
     "*.nix": allow
     "*.json": allow
     "*.yaml": allow
@@ -45,7 +47,6 @@ permission:
     "Justfile": allow
     "*/Justfile": allow
     ".gitignore": allow
-    "*.toml": allow
   bash:
     # No "*": "ask" catch-all: agent rules are evaluated after the user
     # config (last match wins), so a catch-all would nullify the read-only
@@ -56,14 +57,14 @@ permission:
     # "cargo check" would otherwise fall through to the global bash default.
     "cargo doc": allow
     "cargo doc *": allow
-    "cargo clippy": allow
-    "cargo clippy *": allow
     "cargo fmt": allow
     "cargo fmt *": allow
-    "cargo nextest": allow
-    "cargo nextest *": allow
     "cargo check": allow
     "cargo check *": allow
+    "cargo clippy": allow
+    "cargo clippy *": allow
+    "cargo nextest": allow
+    "cargo nextest *": allow
     "cargo build": allow
     "cargo build *": allow
   webfetch: ask
